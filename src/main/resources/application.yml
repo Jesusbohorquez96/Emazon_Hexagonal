@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/emazon_hexagonal
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: emazon_hexagonal
+
+appdescription: "Descripción de mi aplicación"
+appversion: "1.0.0"
+
