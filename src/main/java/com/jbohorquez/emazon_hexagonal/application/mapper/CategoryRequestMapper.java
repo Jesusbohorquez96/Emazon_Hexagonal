@@ -13,8 +13,4 @@ public interface CategoryRequestMapper {
 
 
     Category toCategory(CategoryRequest categoryRequest);
-
-//    default Long toLong(CategoryRequest categoryRequest) {
-//        return categoryRequest.getId();
-//    }
 }

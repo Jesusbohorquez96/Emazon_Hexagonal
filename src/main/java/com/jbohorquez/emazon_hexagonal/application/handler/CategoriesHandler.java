@@ -7,6 +7,7 @@ import com.jbohorquez.emazon_hexagonal.application.mapper.CategoryResponseMapper
 import com.jbohorquez.emazon_hexagonal.domain.api.ICategoryServicePort;
 import com.jbohorquez.emazon_hexagonal.domain.model.Category;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
@@ -21,6 +22,11 @@ public class CategoriesHandler implements ICategoriesHandler {
     private final CategoryRequestMapper categoryRequestMapper;
     private final CategoryResponseMapper categoryResponseMapper;
     private final ICategoryServicePort categoryServicePort;
+
+    @Override
+    public Page<Category> getCategories(int page, int size, String sortDirection) {
+        return categoryServicePort.getCategories(page, size, sortDirection);
+    }
 
     @Override
     public void saveCategoryInCategory(CategoryRequest categoryRequest) {

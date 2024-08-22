@@ -7,6 +7,9 @@ import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity.Category
 import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.mapper.CategoryEntityMapper;
 import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.repository.ICategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -69,6 +72,20 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
     @Override
     public void deleteCategory(Long categoryId) {
         categoryRepository.deleteById(categoryId);
+    }
+
+    @Override
+    public Page<Category> getCategories(PageRequest pageRequest) {
+        Page<CategoryEntity> categoryEntityPage = categoryRepository.findAll(pageRequest);
+        if (categoryEntityPage.isEmpty()) {
+            throw new NoDataFoundException();
+        }
+        return categoryEntityPage.map(categoryEntityMapper::toCategory);
+    }
+
+    @Override
+    public Page<Category> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable).map(categoryEntityMapper::toCategory);
     }
 }
 

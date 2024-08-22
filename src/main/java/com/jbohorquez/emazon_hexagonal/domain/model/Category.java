@@ -1,6 +1,8 @@
 package com.jbohorquez.emazon_hexagonal.domain.model;
 
 
+import org.springframework.data.repository.PagingAndSortingRepository;
+
 public class Category {
 
     private Long id;
@@ -35,5 +37,7 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
     }
 }

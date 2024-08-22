@@ -1,5 +1,6 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.repository;
 
+import com.jbohorquez.emazon_hexagonal.application.dto.CategoryDto;
 import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity.CategoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,5 @@ public interface ICategoryRepository extends JpaRepository<CategoryEntity, Long>
     Optional<CategoryEntity> findByName(String name);
 
     void deleteById(Long categoryId);
+
 }

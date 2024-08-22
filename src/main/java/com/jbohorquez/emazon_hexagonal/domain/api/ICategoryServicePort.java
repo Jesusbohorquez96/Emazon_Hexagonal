@@ -1,6 +1,7 @@
 package com.jbohorquez.emazon_hexagonal.domain.api;
 
 import com.jbohorquez.emazon_hexagonal.domain.model.Category;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,4 +17,9 @@ public interface ICategoryServicePort {
     void updateCategory(Category category);
 
     void deleteCategory(Long categoryId);
+
+    Page<Category> getCategories(int page, int size, boolean ascending);
+
+    Page<Category> getCategories(int pageNumber, int pageSize, String sortDirection);
 }
+

@@ -3,7 +3,9 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.ICategoriesHandler;
+import com.jbohorquez.emazon_hexagonal.domain.model.Category;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,16 @@ import java.util.List;
 public class CategoriesRestController {
 
     private final ICategoriesHandler categoriesHandler;
+
+    @GetMapping
+    public ResponseEntity<Page<Category>> getCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String sortDirection
+    ) {
+        Page<Category> categories = categoriesHandler.getCategories(page, size, sortDirection);
+        return ResponseEntity.ok(categories);
+    }
 
     @PostMapping("/")
     public ResponseEntity<Void> saveCategoryInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
