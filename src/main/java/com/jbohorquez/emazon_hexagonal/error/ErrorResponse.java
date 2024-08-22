@@ -10,7 +10,6 @@ public class ErrorResponse {
         this.error = error;
     }
 
-    // Getters y setters
     public String getField() {
         return field;
     }
