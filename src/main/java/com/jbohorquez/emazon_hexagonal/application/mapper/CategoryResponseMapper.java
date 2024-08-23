@@ -2,7 +2,6 @@ package com.jbohorquez.emazon_hexagonal.application.mapper;
 
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryResponse;
 import com.jbohorquez.emazon_hexagonal.domain.model.Category;
-import com.jbohorquez.emazon_hexagonal.domain.model.Description;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -24,7 +23,7 @@ public interface CategoryResponseMapper {
     @Mapping(source = "categoryDescription", target = "description")
     Category toResponseList(CategoryResponse categoryResponse);
 
-    default List<CategoryResponse> toResponseList(List<Category> CategoryList, List<Description> descriptionList) {
+    default List<CategoryResponse> toResponseList(List<Category> CategoryList, List<Category> descriptionList) {
         return CategoryList.stream()
                 .map(this::toResponseList).toList();
     }
