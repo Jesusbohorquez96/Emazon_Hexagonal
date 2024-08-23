@@ -17,11 +17,4 @@ public interface CategoryResponseMapper {
     @Mapping(target = "categoryName", source = "name")
     @Mapping(target = "categoryDescription", source = "description")
     CategoryResponse toResponseList(Category category);
-
-
-//    @Mapping(source = "categoryName", target = "name")
-//    @Mapping(source = "categoryDescription", target = "description")
-//    Category toResponseList(CategoryResponse categoryResponse);
-
-
 }

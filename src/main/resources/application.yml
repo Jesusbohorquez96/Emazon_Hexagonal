@@ -4,7 +4,7 @@ server:
 spring:
   devtools:
     restart:
-      enabled: false
+      enabled: true
       additional-paths: src/main/java
 
   datasource:
@@ -16,6 +16,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
+
 
 
   data:

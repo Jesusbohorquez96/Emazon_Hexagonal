@@ -3,13 +3,13 @@ package com.jbohorquez.emazon_hexagonal.domain.model;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public class Category {
+public class Brand {
 
     private Long id;
     private String name;
     private String description;
 
-    public Category(Long id, String name, String description) {
+    public Brand(Long id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -38,12 +38,12 @@ public class Category {
     public void setDescription(String description) {
         this.description = description;
     }
-    public interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
+    public interface IBrandRepository extends PagingAndSortingRepository<Brand, Long> {
     }
 
     @Override
     public String toString() {
-        return "Category{" +
+        return "Brand{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

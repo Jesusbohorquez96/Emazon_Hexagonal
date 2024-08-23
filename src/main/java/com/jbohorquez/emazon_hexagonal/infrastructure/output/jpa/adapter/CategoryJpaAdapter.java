@@ -20,51 +20,50 @@ import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME
 public class CategoryJpaAdapter implements ICategoryPersistencePort {
 
     private final ICategoryRepository categoryRepository;
-
     private final CategoryEntityMapper categoryEntityMapper;
-
 
     @Override
     public void saveCategory(Category category) {
-        //validar que no exista una categoria con el mismo nombre
+        //validate that a category with the same name does not exist
         if (categoryRepository.findByName(category.getName()).isPresent()) {
-            throw new CategoryAlreadyExistsException();
+            throw new AlreadyExistsException();
         }
-        //validar si nombre es mas corto que DESCRIPTION_MAX_LENGTH caracteres
+        //validate your name is shorter than DESCRIPTION MAX_LENGTH characters
         if (category.getName().length() > NAME_MAX_LENGTH) {
             throw new NameTooLongException("Name is too long");
         }
-        //validar si la descripcion es mas corta que DESCRIPTION_MAX_LENGTH caracteres
-        if (category.getDescription().length() > DESCRIPTION_MAX_LENGTH) {
+        //validate if the description is shorter than DESCRIPTION MAX_LENGTH characters
+        if (category.getDescription() == null || category.getDescription().length() > DESCRIPTION_MAX_LENGTH) {
             throw new DescriptionTooLongException("Description is too long");
         }
-        //validar que name y description tengan contenido
+        //validate that name and description have content
         if (category.getName().isEmpty() || category.getDescription().isEmpty()) {
             throw new AllNotNameDescriptionNull("Name or description is empty");
         }
         categoryRepository.save(categoryEntityMapper.toEntity(category));
+
     }
 
     @Override
     public List<Category> getAllCategory() {
-            List<CategoryEntity> categoryEntityList = categoryRepository.findAll();
-            if (categoryEntityList.isEmpty()) {
-                throw new NoDataFoundException();
-            }
-            return categoryEntityMapper.toCategoryList(categoryEntityList);
+        List<CategoryEntity> categoryEntityList = categoryRepository.findAll();
+        if (categoryEntityList.isEmpty()) {
+            throw new NoDataFoundException();
+        }
+        return categoryEntityMapper.toCategoryList(categoryEntityList);
     }
 
     @Override
     public Category getCategoryById(Long categoryId) {
         return categoryEntityMapper.toCategory(categoryRepository.findById(categoryId)
-                .orElseThrow(CategoryAlreadyExistsException::new));
+                .orElseThrow(AlreadyExistsException::new));
     }
 
     @Override
     public void updateCategory(Category category) {
-        //validar que no exista una categoria con el mismo nombre
+        //validate that a category with the same name does not exist
         if (categoryRepository.findByName(category.getName()).isPresent()) {
-            throw new CategoryAlreadyExistsException();
+            throw new AlreadyExistsException();
         }
         categoryRepository.save(categoryEntityMapper.toEntity(category));
     }
@@ -88,4 +87,3 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
         return categoryRepository.findAll(pageable).map(categoryEntityMapper::toCategory);
     }
 }
-

@@ -1,8 +1,8 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler;
 
 import com.jbohorquez.emazon_hexagonal.error.ErrorResponse;
-import com.jbohorquez.emazon_hexagonal.infrastructure.exception.CategoryAlreadyExistsException;
-import com.jbohorquez.emazon_hexagonal.infrastructure.exception.CategoryNotFoundException;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exception.AlreadyExistsException;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exception.NotFoundException;
 import com.jbohorquez.emazon_hexagonal.infrastructure.exception.NoDataFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,11 @@ import java.util.*;
 @ControllerAdvice
 public class ControllerAdvisor {
 
-    private static final String MESSAGE = "Message";
+    private static final String MESSAGE = "message";
 
-    @ExceptionHandler(CategoryAlreadyExistsException.class)
+    @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<Map<String, String>> handleCategoryAlreadyExistsException(
-            CategoryAlreadyExistsException categoryAlreadyExistsException) {
+            AlreadyExistsException categoryAlreadyExistsException) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.CATEGORY_ALREADY_EXISTS.getMessage()));
     }
@@ -31,16 +31,17 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_DATA_FOUND.getMessage()));
     }
 
-    @ExceptionHandler(CategoryNotFoundException.class)
+    @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Map<String, String>> handleCategoryNotFoundException(
-            CategoryNotFoundException categoryNotFoundException) {
+            NotFoundException categoryNotFoundException) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.CATEGORY_NOT_FOUND.getMessage()));
     }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.ULTRA_STEP_CHARACTERS.getMessage()));
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INTERNAL_ERROR.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

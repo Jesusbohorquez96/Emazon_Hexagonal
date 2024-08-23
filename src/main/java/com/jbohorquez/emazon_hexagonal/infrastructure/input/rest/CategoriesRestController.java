@@ -3,7 +3,6 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.ICategoriesHandler;
-import com.jbohorquez.emazon_hexagonal.domain.model.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
