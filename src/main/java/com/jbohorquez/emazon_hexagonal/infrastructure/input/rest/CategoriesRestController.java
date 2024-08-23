@@ -21,12 +21,12 @@ public class CategoriesRestController {
     private final ICategoriesHandler categoriesHandler;
 
     @GetMapping
-    public ResponseEntity<Page<Category>> getCategories(
+    public ResponseEntity<Page<CategoryResponse>> getCategories(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "asc") String sortDirection
     ) {
-        Page<Category> categories = categoriesHandler.getCategories(page, size, sortDirection);
+        Page<CategoryResponse> categories = categoriesHandler.getCategories(page, size, sortDirection);
         return ResponseEntity.ok(categories);
     }
 

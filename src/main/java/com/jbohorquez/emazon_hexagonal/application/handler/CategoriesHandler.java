@@ -24,8 +24,9 @@ public class CategoriesHandler implements ICategoriesHandler {
     private final ICategoryServicePort categoryServicePort;
 
     @Override
-    public Page<Category> getCategories(int page, int size, String sortDirection) {
-        return categoryServicePort.getCategories(page, size, sortDirection);
+    public Page<CategoryResponse> getCategories(int page, int size, String sortDirection) {
+        return categoryServicePort.getCategories(page, size, sortDirection)
+                .map(categoryResponseMapper::toResponseList);
     }
 
     @Override
