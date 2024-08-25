@@ -51,6 +51,8 @@ public abstract class CategoryUseCase implements ICategoryServicePort {
         } else {
             sort = sort.ascending();
         }
+        //TODO: aqui no va paginacion validacion de que la marca ya existe
+
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return categoryPersistencePort.findAll(pageable);
     }

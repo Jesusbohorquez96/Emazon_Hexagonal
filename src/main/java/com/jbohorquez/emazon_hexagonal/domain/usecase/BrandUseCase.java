@@ -54,6 +54,7 @@ public abstract class BrandUseCase implements BrandServicePort {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return brandPersistencePort.findAll(pageable);
     }
+    //TODO: aqui no va paginacion
 
     public abstract Page<Brand> getBrands(int page, int size, boolean ascending);
 }

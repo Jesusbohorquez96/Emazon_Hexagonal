@@ -26,17 +26,17 @@ public class BrandJpaAdapter implements BrandPersistencePort {
 
     @Override
     public void saveBrand(Brand brand) {
-        //validate that the name is not equal to another name
+        //validate that a brand with the same name does not exist
         if (brandRepository.findByName(brand.getName()).isPresent()) {
             throw new AlreadyExistsException();
         }
-        //validate that the description is equal to or less than DESCRIPTION_BRAND_MAX_LENGTH
-        if (brand.getDescription().length() > DESCRIPTION_BRAND_MAX_LENGTH) {
-            throw new DescriptionTooLongException( "Description is too long");
-        }
-        //validate that the name is equal to or less than NAME_MAX_LENGTH
+        //validate your name is shorter than DESCRIPTION MAX_LENGTH characters
         if (brand.getName().length() > NAME_MAX_LENGTH) {
             throw new NameTooLongException("Name is too long");
+        }
+        //validate if the description is shorter than DESCRIPTION MAX_LENGTH characters
+        if (brand.getDescription() == null || brand.getDescription().length() > DESCRIPTION_BRAND_MAX_LENGTH) {
+            throw new DescriptionTooLongException("Description is too long");
         }
         brandRepository.save(brandEntityMapper.toEntity(brand));
     }

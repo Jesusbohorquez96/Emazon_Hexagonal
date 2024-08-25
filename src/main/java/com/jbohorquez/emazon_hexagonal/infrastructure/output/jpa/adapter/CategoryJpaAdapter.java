@@ -24,10 +24,6 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
 
     @Override
     public void saveCategory(Category category) {
-        //validate that a category with the same name does not exist
-        if (categoryRepository.findByName(category.getName()).isPresent()) {
-            throw new AlreadyExistsException();
-        }
         //validate your name is shorter than DESCRIPTION MAX_LENGTH characters
         if (category.getName().length() > NAME_MAX_LENGTH) {
             throw new NameTooLongException("Name is too long");
@@ -41,7 +37,6 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
             throw new AllNotNameDescriptionNull("Name or description is empty");
         }
         categoryRepository.save(categoryEntityMapper.toEntity(category));
-
     }
 
     @Override
