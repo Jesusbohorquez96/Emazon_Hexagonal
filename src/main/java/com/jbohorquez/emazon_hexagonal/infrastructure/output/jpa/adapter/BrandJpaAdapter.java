@@ -30,7 +30,7 @@ public class BrandJpaAdapter implements BrandPersistencePort {
         if (brandRepository.findByName(brand.getName()).isPresent()) {
             throw new AlreadyExistsException();
         }
-        //validate your name is shorter than DESCRIPTION MAX_LENGTH characters
+        //validate your name is shorter than NAME_MAX_LENGTH characters
         if (brand.getName().length() > NAME_MAX_LENGTH) {
             throw new NameTooLongException("Name is too long");
         }

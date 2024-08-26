@@ -18,8 +18,8 @@ public class ControllerAdvisor {
     private static final String MESSAGE = "message";
 
     @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<Map<String, String>> handleCategoryAlreadyExistsException(
-            AlreadyExistsException categoryAlreadyExistsException) {
+    public ResponseEntity<Map<String, String>> AlreadyExistsException(
+            AlreadyExistsException AlreadyExistsException) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.CATEGORY_ALREADY_EXISTS.getMessage()));
     }
