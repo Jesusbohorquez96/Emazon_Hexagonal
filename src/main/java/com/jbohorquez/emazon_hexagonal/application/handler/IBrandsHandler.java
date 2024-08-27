@@ -30,13 +30,13 @@ public class IBrandsHandler implements BrandsHandler {
     }
 
     @Override
-    public void saveBrandInBrand(BrandRequest brandRequest) {
+    public void saveInBrand(BrandRequest brandRequest) {
         Brand brand = brandRequestMapper.toBrand(brandRequest);
         brandServicePort.saveBrand(brand);
     }
 
     @Override
-    public List<BrandResponse> getBrandFromBrand() {
+    public List<BrandResponse> getFromBrand() {
         List<Brand> brand = brandServicePort.getAllBrand();
         return brand.stream()
                 .map(brandResponseMapper::toBrResponseList)
@@ -44,19 +44,19 @@ public class IBrandsHandler implements BrandsHandler {
     }
 
     @Override
-    public BrandResponse getBrandFromBrand(Long brandId) {
+    public BrandResponse getFromBrand(Long brandId) {
         Brand brand = brandServicePort.getBrandById(brandId);
         return brandResponseMapper.toBrResponseList(brand);
     }
 
     @Override
-    public void updateBrandInBrand(BrandRequest brandRequest) {
+    public void updateInBrand(BrandRequest brandRequest) {
         Brand brand = brandRequestMapper.toBrand(brandRequest);
         brandServicePort.updateBrand(brand);
     }
 
     @Override
-    public void deleteBrandFromBrand(Long brandId) {
+    public void deleteFromBrand(Long brandId) {
         brandServicePort.deleteBrand(brandId);
     }
 }

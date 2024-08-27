@@ -11,13 +11,13 @@ public interface BrandsHandler {
 
     Page<BrandResponse> getBrands(int page, int size, String sortDirection);
 
-    void saveBrandInBrand(BrandRequest brandRequest);
+    void saveInBrand(BrandRequest brandRequest);
 
-    List<BrandResponse> getBrandFromBrand();
+    List<BrandResponse> getFromBrand();
 
-    BrandResponse getBrandFromBrand(Long brandId);
+    BrandResponse getFromBrand(Long brandId);
 
-    void updateBrandInBrand(BrandRequest brandRequest);
+    void updateInBrand(BrandRequest brandRequest);
 
-    void deleteBrandFromBrand(Long brandId);
+    void deleteFromBrand(Long brandId);
 }

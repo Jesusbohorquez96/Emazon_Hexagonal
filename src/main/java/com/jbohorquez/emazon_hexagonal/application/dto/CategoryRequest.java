@@ -20,4 +20,7 @@ public class CategoryRequest {
     //Not null max DESCRIPTION_MAX_LENGTH characters
     @Column(length = DESCRIPTION_MAX_LENGTH, nullable = false)
     private String description;
+
+    public CategoryRequest(String newCategory, String newDescription) {
+    }
 }

@@ -22,4 +22,7 @@ public class BrandRequest {
     @NotBlank(message = "Brand description is mandatory")
     @Size(max = DESCRIPTION_BRAND_MAX_LENGTH)
     private String description;
+
+    public BrandRequest(String newBrand, String newDescription) {
+    }
 }
