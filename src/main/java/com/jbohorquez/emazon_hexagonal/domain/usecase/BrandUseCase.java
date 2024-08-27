@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-public abstract class BrandUseCase implements BrandServicePort {
+public class BrandUseCase implements BrandServicePort {
 
     private final BrandPersistencePort brandPersistencePort;
 
@@ -54,7 +54,12 @@ public abstract class BrandUseCase implements BrandServicePort {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return brandPersistencePort.findAll(pageable);
     }
-    //TODO: aqui no va paginacion
-
-    public abstract Page<Brand> getBrands(int page, int size, boolean ascending);
+    @Override
+    public Page<Brand> getBrands(int page, int size, boolean ascending) {
+        Sort sort = ascending ? Sort.by("name").ascending() : Sort.by("name").descending();
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        return brandPersistencePort.findAll(pageRequest);
+    }
+//
+//    public abstract Page<Brand> getBrands(int page, int size, boolean ascending);
 }

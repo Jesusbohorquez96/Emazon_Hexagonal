@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-public abstract class CategoryUseCase implements ICategoryServicePort {
+public  class CategoryUseCase implements ICategoryServicePort {
 
     private final ICategoryPersistencePort categoryPersistencePort;
 
@@ -44,6 +44,13 @@ public abstract class CategoryUseCase implements ICategoryServicePort {
     }
 
     @Override
+    public Page<Category> getCategories(int page, int size, boolean ascending) {
+        String sortDirection = ascending ? "asc" : "desc";
+        return getCategories(page, size, sortDirection);
+    }
+
+
+    @Override
     public Page<Category> getCategories(int pageNumber, int pageSize, String sortDirection) {
         Sort sort = Sort.by("name");
         if ("desc".equalsIgnoreCase(sortDirection)) {
@@ -51,8 +58,6 @@ public abstract class CategoryUseCase implements ICategoryServicePort {
         } else {
             sort = sort.ascending();
         }
-        //TODO: aqui no va paginacion validacion de que la marca ya existe
-
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return categoryPersistencePort.findAll(pageable);
     }
