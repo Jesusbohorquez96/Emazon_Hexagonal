@@ -40,10 +40,10 @@ public class ArticleRequest {
     private Double price;
 
     @NotEmpty(message = "At least one category is required")
-    private Set<Category> categories;
+    private Set<Long> categories;
 
 
-    public ArticleRequest(String newArticle, String newDescription, Integer newStock, Double newPrice, Set<Category> newCategories) {
+    public ArticleRequest(String newArticle, String newDescription, Integer newStock, Double newPrice, Set<Long> newCategories) {
         this.name = newArticle;
         this.description = newDescription;
         this.stock = newStock;

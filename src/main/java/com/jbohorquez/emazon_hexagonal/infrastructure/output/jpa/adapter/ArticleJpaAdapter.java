@@ -27,6 +27,20 @@ public class ArticleJpaAdapter implements IArticlePersistencePort {
 
     @Override
     public void saveArticle(Article article) {
+        //Article debe de tener 1 o max 3 categorias asociadas
+        System.out.println("hola mundo como esta " + article.getCategories().size());
+        if (article.getCategories().size() > 3) {
+            throw new IllegalArgumentException("Article can have 1 to 3 categories");
+        }
+        if (article.getCategories().isEmpty()) {
+            throw new IllegalArgumentException("Article must have at least one category");
+        }
+        System.out.println("hola " + article);
+        //validar que los id de cartegorias no sean iguales
+        if (article.getCategories().stream().distinct().count() != article.getCategories().size()) {
+            throw new IllegalArgumentException("Categories must be different");
+        }
+        //TODO crear mensajes
         if (articleRepository.findByName(article.getName()).isPresent()) {
             throw new AlreadyExistsException();
         }

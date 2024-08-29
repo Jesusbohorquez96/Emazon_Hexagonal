@@ -15,6 +15,10 @@ public class Category {
         this.description = description;
     }
 
+    public Category() {
+
+    }
+
     public Long getId() {
         return id;
     }
@@ -38,8 +42,7 @@ public class Category {
     public void setDescription(String description) {
         this.description = description;
     }
-    public interface CategoryRepository extends PagingAndSortingRepository<Category, Long> {
-    }
+
 
     @Override
     public String toString() {

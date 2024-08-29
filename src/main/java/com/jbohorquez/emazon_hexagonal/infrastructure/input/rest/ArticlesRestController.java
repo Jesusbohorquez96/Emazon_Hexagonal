@@ -46,7 +46,7 @@ public class ArticlesRestController {
     })
     @PostMapping("/")
     public ResponseEntity<Void> saveArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
-        System.out.println("articleRequest = " + articleRequest);
+        System.out.println("hola mundo");
         articlesHandler.saveArticleIn(articleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
