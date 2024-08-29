@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
+import java.util.Set;
+
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_MAX_LENGTH;
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME_MAX_LENGTH;
 
@@ -33,4 +35,6 @@ public class CategoryEntity {
     @Size(message = "Description is too long", max = DESCRIPTION_MAX_LENGTH)
     private String description;
 
+    @ManyToMany(mappedBy = "categories")
+    private Set<ArticleEntity> articles;
 }

@@ -14,7 +14,4 @@ public class CategoryResponse {
     public CategoryResponse(long l, String category1, String description1) {
     }
 
-    public CategoryResponse() {
-
-    }
 }
