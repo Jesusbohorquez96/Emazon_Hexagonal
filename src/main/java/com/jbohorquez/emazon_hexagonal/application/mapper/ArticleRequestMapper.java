@@ -17,8 +17,7 @@ public interface ArticleRequestMapper {
 
     Article toArticle(ArticleRequest articleRequest);
 
-    //convertir de ArticleRequest.categories set<Long> a Article.categories set<Category>
-    default Set<Category> kokiotoCategories(Set<Long> categories) {
+    default Set<Category> Categories(Set<Long> categories) {
         return categories.stream().map(
                 (categoryId) -> {
                     Category category = new Category();

@@ -19,15 +19,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/brands")
 @RequiredArgsConstructor
-@Tag(name = "Productos", description = "Gestión de productos")
+@Tag(name = "Brand", description = "Brand management")
 public class BrandsRestController {
 
     private final BrandsHandler brandsHandler;
 
-    @Operation(summary = "Obtener marcas paginadas", description = "Devuelve una lista paginada de marcas.")
+    @Operation(summary = "Get paginated bookmarks", description = "Returns a paginated list of tags.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de marcas devuelta exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud inválida")
+            @ApiResponse(responseCode = "200", description = "List of brands returned successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
     public ResponseEntity<Page<BrandResponse>> getBrands(
@@ -39,10 +39,10 @@ public class BrandsRestController {
         return ResponseEntity.ok(brands);
     }
 
-    @Operation(summary = "Guardar una nueva marca", description = "Guarda una nueva marca en la base de datos.")
+    @Operation(summary = "Save a new brand", description = "Saves a new mark to the database.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Marca creada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+            @ApiResponse(responseCode = "201", description = "Brand successfully created"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PostMapping("/")
     public ResponseEntity<Void> saveInBrand(@Valid @RequestBody BrandRequest brandRequest) {
@@ -51,30 +51,30 @@ public class BrandsRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Obtener todas las marcas", description = "Devuelve una lista de todas las marcas.")
+    @Operation(summary = "Get all brands", description = "Returns a list of all brands.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de marcas devuelta exitosamente")
+            @ApiResponse(responseCode = "200", description = "List of brands returned successfully")
     })
     @GetMapping("/")
     public ResponseEntity<List<BrandResponse>> getFromBrand() {
         return ResponseEntity.ok(brandsHandler.getFromBrand());
     }
 
-    @Operation(summary = "Obtener una marca por ID", description = "Devuelve una marca específica basada en su ID.")
+    @Operation(summary = "Get a mark by ID", description = "Returns a specific tag based on its ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Marca devuelta exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Marca no encontrada")
+            @ApiResponse(responseCode = "200", description = "Brand successfully returned"),
+            @ApiResponse(responseCode = "404", description = "Brand not found")
     })
     @GetMapping("/{brId}")
     public ResponseEntity<BrandResponse> getFromBrand(@PathVariable(name = "brId") Long brandId) {
         return ResponseEntity.ok(brandsHandler.getFromBrand(brandId));
     }
 
-    @Operation(summary = "Actualizar una marca", description = "Actualiza una marca existente en la base de datos.")
+    @Operation(summary = "Update a brand", description = "Updates an existing tag in the database.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Marca actualizada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"),
-            @ApiResponse(responseCode = "404", description = "Marca no encontrada")
+            @ApiResponse(responseCode = "204", description = "Brand successfully updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "404", description = "Brand not found")
     })
     @PutMapping("/")
     public ResponseEntity<Void> updateInBrand(@Valid @RequestBody BrandRequest brandRequest) {
@@ -82,10 +82,10 @@ public class BrandsRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Eliminar una marca", description = "Elimina una marca existente basada en su ID.")
+    @Operation(summary = "Delete a brand", description = "Deletes an existing tag based on its ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Marca eliminada exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Marca no encontrada")
+            @ApiResponse(responseCode = "204", description = "Brand successfully removed"),
+            @ApiResponse(responseCode = "404", description = "Brand not found")
     })
     @DeleteMapping("/{brandId}")
     public ResponseEntity<Void> deleteFromBrand(@PathVariable Long brandId) {
