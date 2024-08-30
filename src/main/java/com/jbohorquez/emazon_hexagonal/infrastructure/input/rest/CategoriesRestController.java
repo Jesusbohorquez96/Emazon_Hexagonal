@@ -19,15 +19,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
-@Tag(name = "Categories", description = "API para la gestión de categorías")
+@Tag(name = "Categories", description = "API for category management")
 public class CategoriesRestController {
 
     private final ICategoriesHandler categoriesHandler;
 
-    @Operation(summary = "Obtener categorías paginadas", description = "Devuelve una lista paginada de categorías.")
+    @Operation(summary = "Get paginated categories", description = "Returns a paginated list of categories.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de categorías devuelta exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud inválida")
+            @ApiResponse(responseCode = "200", description = "Category list returned successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
     public ResponseEntity<Page<CategoryResponse>> getCategories(
@@ -39,10 +39,10 @@ public class CategoriesRestController {
         return ResponseEntity.ok(categories);
     }
 
-    @Operation(summary = "Guardar una nueva categoría", description = "Guarda una nueva categoría en la base de datos.")
+    @Operation(summary = "Save a new category", description = "Saves a new category to the database.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Categoría creada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+            @ApiResponse(responseCode = "201", description = "Category created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PostMapping("/")
     public ResponseEntity<Void> saveInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
@@ -50,30 +50,30 @@ public class CategoriesRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Obtener todas las categorías", description = "Devuelve una lista de todas las categorías.")
+    @Operation(summary = "Get all categories", description = "Returns a list of all categories.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de categorías devuelta exitosamente")
+            @ApiResponse(responseCode = "200", description = "Category list returned successfully")
     })
     @GetMapping("/")
     public ResponseEntity<List<CategoryResponse>> getFromCategory() {
         return ResponseEntity.ok(categoriesHandler.getCategoryFromCategory());
     }
 
-    @Operation(summary = "Obtener una categoría por ID", description = "Devuelve una categoría específica basada en su ID.")
+    @Operation(summary = "Get a category by ID", description = "Returns a specific category based on its ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Categoría devuelta exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Categoría no encontrada")
+            @ApiResponse(responseCode = "200", description = "Category returned successfully"),
+            @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getFromCategory(@PathVariable(name = "id") Long categoryId) {
         return ResponseEntity.ok(categoriesHandler.getCategoryFromCategory(categoryId));
     }
 
-    @Operation(summary = "Actualizar una categoría", description = "Actualiza una categoría existente en la base de datos.")
+    @Operation(summary = "Update a category", description = "Updates an existing category in the database.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Categoría actualizada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"),
-            @ApiResponse(responseCode = "404", description = "Categoría no encontrada")
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @PutMapping("/")
     public ResponseEntity<Void> updateInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
@@ -81,10 +81,10 @@ public class CategoriesRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Eliminar una categoría", description = "Elimina una categoría existente basada en su ID.")
+    @Operation(summary = "Delete a category", description = "Delete an existing category based on its ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Categoría eliminada exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Categoría no encontrada")
+            @ApiResponse(responseCode = "204", description = "Category successfully deleted"),
+            @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<Void> deleteFromCategory(@PathVariable Long categoryId) {

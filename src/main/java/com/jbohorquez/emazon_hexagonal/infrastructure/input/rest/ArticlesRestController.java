@@ -19,12 +19,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/articles")
 @RequiredArgsConstructor
-@Tag(name = "articles", description = "article management")
+@Tag(name = "Articles", description = "Article management")
 public class ArticlesRestController {
 
     private final ArticlesHandler articlesHandler;
 
-    @Operation(summary = "get paginated articles", description = "Returns a paginated list of articles.")
+    @Operation(summary = "Get paginated articles", description = "Returns a paginated list of articles.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of items returned successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request")
@@ -39,42 +39,41 @@ public class ArticlesRestController {
         return ResponseEntity.ok(articles);
     }
 
-    @Operation(summary = "Guardar una nueva article", description = "Guarda una nueva article en la base de datos.")
+    @Operation(summary = "Save a new article", description = "Saves a new article to the database.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Article creada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+            @ApiResponse(responseCode = "201", description = "Article created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PostMapping("/")
     public ResponseEntity<Void> saveArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
-        System.out.println("hola mundo");
         articlesHandler.saveArticleIn(articleRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Operation(summary = "Obtener todas las articles", description = "Devuelve una lista de todas las articles.")
+    @Operation(summary = "Get all articles", description = "Returns a list of all articles.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de articles devuelta exitosamente")
+            @ApiResponse(responseCode = "200", description = "List of articles returned successfully")
     })
     @GetMapping("/")
     public ResponseEntity<List<ArticleResponse>> getArticleFrom() {
         return ResponseEntity.ok(articlesHandler.getArticleFrom());
     }
 
-    @Operation(summary = "Obtener una article por ID", description = "Devuelve una article específica basada en su ID.")
+    @Operation(summary = "Get an article by ID", description = "Returns a specific article based on its ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Article devuelta exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Article no encontrada")
+            @ApiResponse(responseCode = "200", description = "Article returned successfully"),
+            @ApiResponse(responseCode = "404", description = "Article not found")
     })
     @GetMapping("/{brId}")
     public ResponseEntity<ArticleResponse> getArticleFrom(@PathVariable(name = "brId") Long articleId) {
         return ResponseEntity.ok(articlesHandler.getArticleFrom(articleId));
     }
 
-    @Operation(summary = "Actualizar una article", description = "Actualiza una article existente en la base de datos.")
+    @Operation(summary = "Update an article", description = "Updates an existing article in the database.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Article actualizada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"),
-            @ApiResponse(responseCode = "404", description = "Article no encontrada")
+            @ApiResponse(responseCode = "204", description = "Article successfully updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "404", description = "Article not found")
     })
     @PutMapping("/")
     public ResponseEntity<Void> updateArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
@@ -82,10 +81,10 @@ public class ArticlesRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Eliminar una article", description = "Elimina una article existente basada en su ID.")
+    @Operation(summary = "Delete an article", description = "Deletes an existing article based on its ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Article eliminada exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Article no encontrada")
+            @ApiResponse(responseCode = "204", description = "Article successfully deleted"),
+            @ApiResponse(responseCode = "404", description = "Article not found")
     })
     @DeleteMapping("/{articleId}")
     public ResponseEntity<Void> deleteArticleFrom(@PathVariable Long articleId) {
