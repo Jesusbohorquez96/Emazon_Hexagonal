@@ -3,6 +3,8 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.BrandRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.BrandResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.BrandsHandler;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exception.AllExistsException;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/brands")
@@ -44,12 +48,20 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "201", description = "Brand successfully created"),
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
+
     @PostMapping("/")
-    public ResponseEntity<Void> saveInBrand(@Valid @RequestBody BrandRequest brandRequest) {
-        System.out.println("brandRequest = " + brandRequest);
-        brandsHandler.saveInBrand(brandRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Map<String, String>> saveInBrand(@Valid @RequestBody BrandRequest brandRequest) {
+        System.out.println("BrandRequest: " + brandRequest);
+        try {
+            brandsHandler.saveInBrand(brandRequest);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Collections.singletonMap("message", ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("message", ExceptionResponse.ALREADY_EXISTS.getMessage()));
+        }
     }
+
 
     @Operation(summary = "Get all brands", description = "Returns a list of all brands.")
     @ApiResponses(value = {
@@ -90,7 +102,7 @@ public class BrandsRestController {
     @DeleteMapping("/{brandId}")
     public ResponseEntity<Void> deleteFromBrand(@PathVariable Long brandId) {
         brandsHandler.deleteFromBrand(brandId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

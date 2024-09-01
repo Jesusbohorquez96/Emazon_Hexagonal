@@ -1,7 +1,6 @@
 package com.jbohorquez.emazon_hexagonal.domain.model;
 
 
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 public class Category {
 
@@ -16,7 +15,6 @@ public class Category {
     }
 
     public Category() {
-
     }
 
     public Long getId() {

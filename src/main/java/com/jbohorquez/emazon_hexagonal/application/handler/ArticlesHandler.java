@@ -29,6 +29,11 @@ public class ArticlesHandler implements IArticlesHandler {
     }
 
     @Override
+    public Page<ArticleResponse> getBrands(int page, int size, String sortDirection) {
+        return null;
+    }
+
+    @Override
     public Page<ArticleResponse> getArticle(int page, int size, String sortDirection) {
         return articleServicePort.getArticles(page, size, Boolean.parseBoolean(sortDirection))
                 .map(articleResponseMapper::toResponseList);
@@ -38,6 +43,13 @@ public class ArticlesHandler implements IArticlesHandler {
     public void saveArticleIn(ArticleRequest articleRequest) {
         Article article = articleRequestMapper.toArticle(articleRequest);
         articleServicePort.saveArticle(article);
+    }
+
+    @Override
+    public Page<ArticleResponse> getArticle(int page, int size, String sortBy, String sortDirection) {
+        boolean ascending = "asc".equalsIgnoreCase(sortDirection);
+        return articleServicePort.getArticles(page, size, sortBy, ascending)
+                .map(articleResponseMapper::toResponseList);
     }
 
     @Override
@@ -64,4 +76,5 @@ public class ArticlesHandler implements IArticlesHandler {
     public void deleteArticleFrom(Long articleId) {
         articleServicePort.deleteArticle(articleId);
     }
+
 }

@@ -3,6 +3,7 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.ICategoriesHandler;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
@@ -55,11 +57,13 @@ class CategoriesRestControllerTest {
     void saveInCategory() {
         CategoryRequest categoryRequest = new CategoryRequest("New Category", "New Description");
 
-        doNothing().when(categoriesHandler).saveCategoryInCategory(categoryRequest);
+        doNothing().when(categoriesHandler).saveInCategory(categoryRequest);
 
-        ResponseEntity<Void> response = categoriesRestController.saveInCategory(categoryRequest);
+        ResponseEntity<Map<String, String>> response = categoriesRestController.saveInCategory(categoryRequest);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Successful creation", response.getBody().get("message"));
     }
 
     @Test
@@ -69,7 +73,7 @@ class CategoriesRestControllerTest {
                 new CategoryResponse(2L, "Category2", "Description2")
         );
 
-        when(categoriesHandler.getCategoryFromCategory()).thenReturn(categoryList);
+        when(categoriesHandler.getFromCategory()).thenReturn(categoryList);
 
         ResponseEntity<List<CategoryResponse>> response = categoriesRestController.getFromCategory();
 
@@ -82,7 +86,7 @@ class CategoriesRestControllerTest {
         Long categoryId = 1L;
         CategoryResponse categoryResponse = new CategoryResponse(categoryId, "Category1", "Description1");
 
-        when(categoriesHandler.getCategoryFromCategory(categoryId)).thenReturn(categoryResponse);
+        when(categoriesHandler.getFromCategory(categoryId)).thenReturn(categoryResponse);
 
         ResponseEntity<CategoryResponse> response = categoriesRestController.getFromCategory(categoryId);
 
@@ -94,7 +98,7 @@ class CategoriesRestControllerTest {
     void updateInCategory() {
         CategoryRequest categoryRequest = new CategoryRequest("Updated Category", "Updated Description");
 
-        doNothing().when(categoriesHandler).updateCategoryInCategory(categoryRequest);
+        doNothing().when(categoriesHandler).updateInCategory(categoryRequest);
 
         ResponseEntity<Void> response = categoriesRestController.updateInCategory(categoryRequest);
 
@@ -105,7 +109,7 @@ class CategoriesRestControllerTest {
     void deleteFromCategory() {
         Long categoryId = 1L;
 
-        doNothing().when(categoriesHandler).deleteCategoryFromCategory(categoryId);
+        doNothing().when(categoriesHandler).deleteFromCategory(categoryId);
 
         ResponseEntity<Void> response = categoriesRestController.deleteFromCategory(categoryId);
 

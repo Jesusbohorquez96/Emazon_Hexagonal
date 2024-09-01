@@ -30,13 +30,13 @@ public class CategoriesHandler implements ICategoriesHandler {
     }
 
     @Override
-    public void saveCategoryInCategory(CategoryRequest categoryRequest) {
+    public void saveInCategory(CategoryRequest categoryRequest) {
         Category category = categoryRequestMapper.toCategory(categoryRequest);
         categoryServicePort.saveCategory(category);
     }
 
     @Override
-    public List<CategoryResponse> getCategoryFromCategory() {
+    public List<CategoryResponse> getFromCategory() {
         List<Category> category = categoryServicePort.getAllCategory();
         return category.stream()
                 .map(categoryResponseMapper::toResponseList)
@@ -44,19 +44,19 @@ public class CategoriesHandler implements ICategoriesHandler {
     }
 
     @Override
-    public CategoryResponse getCategoryFromCategory(Long categoryId) {
+    public CategoryResponse getFromCategory(Long categoryId) {
         Category category = categoryServicePort.getCategoryById(categoryId);
         return categoryResponseMapper.toResponseList(category);
     }
 
     @Override
-    public void updateCategoryInCategory(CategoryRequest categoryRequest) {
+    public void updateInCategory(CategoryRequest categoryRequest) {
         Category category = categoryRequestMapper.toCategory(categoryRequest);
         categoryServicePort.updateCategory(category);
     }
 
     @Override
-    public void deleteCategoryFromCategory(Long categoryId) {
+    public void deleteFromCategory(Long categoryId) {
         categoryServicePort.deleteCategory(categoryId);
     }
 }

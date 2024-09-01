@@ -1,5 +1,10 @@
 package com.jbohorquez.emazon_hexagonal.error;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ErrorResponse {
 
     private String field;
@@ -10,19 +15,4 @@ public class ErrorResponse {
         this.error = error;
     }
 
-    public String getField() {
-        return field;
-    }
-
-    public void setField(String field) {
-        this.field = field;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
 }

@@ -38,7 +38,8 @@ public class Brand {
     public void setDescription(String description) {
         this.description = description;
     }
-    public interface IBrandRepository extends PagingAndSortingRepository<Brand, Long> {
+
+    public Brand() {
     }
 
     @Override

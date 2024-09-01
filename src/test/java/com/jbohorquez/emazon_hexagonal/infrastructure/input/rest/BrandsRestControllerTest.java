@@ -3,6 +3,7 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.BrandRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.BrandResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.BrandsHandler;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,10 +18,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class BrandsRestControllerTest {
 
@@ -58,10 +59,14 @@ class BrandsRestControllerTest {
 
         doNothing().when(brandsHandler).saveInBrand(brandRequest);
 
-        ResponseEntity<Void> response = brandsRestController.saveInBrand(brandRequest);
+        ResponseEntity<Map<String, String>> response = brandsRestController.saveInBrand(brandRequest);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(ExceptionResponse.SUCCESSFUL_CREATION.getMessage(), response.getBody().get("message"));
     }
+
+
 
     @Test
     void getFromBrand() {
@@ -110,6 +115,7 @@ class BrandsRestControllerTest {
 
         ResponseEntity<Void> response = brandsRestController.deleteFromBrand(brandId);
 
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(brandsHandler, times(1)).deleteFromBrand(brandId);
     }
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.validation.constraints.*;
 
+import java.util.Collections;
 import java.util.Set;
 
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_BRAND_MAX_LENGTH;
@@ -42,12 +43,9 @@ public class ArticleRequest {
     @NotEmpty(message = "At least one category is required")
     private Set<Long> categories;
 
+    @NotNull(message = "Brand ID is mandatory")
+    private Long brand;
 
-    public ArticleRequest(String newArticle, String newDescription, Integer newStock, Double newPrice, Set<Long> newCategories) {
-        this.name = newArticle;
-        this.description = newDescription;
-        this.stock = newStock;
-        this.price = newPrice;
-        this.categories = newCategories;
-    }
+
+
 }

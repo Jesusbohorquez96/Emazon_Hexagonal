@@ -62,53 +62,53 @@ class CategoriesHandlerTest {
     }
 
     @Test
-    void saveCategoryInCategory() {
+    void saveInCategory() {
         when(categoryRequestMapper.toCategory(categoryRequest)).thenReturn(category);
         doNothing().when(categoryServicePort).saveCategory(category);
 
-        categoriesHandler.saveCategoryInCategory(categoryRequest);
+        categoriesHandler.saveInCategory(categoryRequest);
 
         verify(categoryRequestMapper, times(1)).toCategory(categoryRequest);
         verify(categoryServicePort, times(1)).saveCategory(category);
     }
 
     @Test
-    void getCategoryFromCategory() {
+    void getFromCategory() {
         when(categoryServicePort.getAllCategory()).thenReturn(Collections.singletonList(category));
         when(categoryResponseMapper.toResponseList(category)).thenReturn(categoryResponse);
 
-        List<CategoryResponse> result = categoriesHandler.getCategoryFromCategory();
+        List<CategoryResponse> result = categoriesHandler.getFromCategory();
 
         assertEquals(1, result.size());
         assertEquals(categoryResponse, result.get(0));
     }
 
     @Test
-    void getCategoryFromCategoryById() {
+    void getFromCategoryById() {
         when(categoryServicePort.getCategoryById(1L)).thenReturn(category);
         when(categoryResponseMapper.toResponseList(category)).thenReturn(categoryResponse);
 
-        CategoryResponse result = categoriesHandler.getCategoryFromCategory(1L);
+        CategoryResponse result = categoriesHandler.getFromCategory(1L);
 
         assertEquals(categoryResponse, result);
     }
 
     @Test
-    void updateCategoryInCategory() {
+    void updateInCategory() {
         when(categoryRequestMapper.toCategory(categoryRequest)).thenReturn(category);
         doNothing().when(categoryServicePort).updateCategory(category);
 
-        categoriesHandler.updateCategoryInCategory(categoryRequest);
+        categoriesHandler.updateInCategory(categoryRequest);
 
         verify(categoryRequestMapper, times(1)).toCategory(categoryRequest);
         verify(categoryServicePort, times(1)).updateCategory(category);
     }
 
     @Test
-    void deleteCategoryFromCategory() {
+    void deleteFromCategory() {
         doNothing().when(categoryServicePort).deleteCategory(1L);
 
-        categoriesHandler.deleteCategoryFromCategory(1L);
+        categoriesHandler.deleteFromCategory(1L);
 
         verify(categoryServicePort, times(1)).deleteCategory(1L);
     }

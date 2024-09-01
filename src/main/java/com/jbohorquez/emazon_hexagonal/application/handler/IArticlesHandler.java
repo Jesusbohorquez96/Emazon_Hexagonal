@@ -11,9 +11,13 @@ public interface IArticlesHandler {
 
     Page<ArticleResponse> getCategories(int page, int size, String sortDirection);
 
+    Page<ArticleResponse> getBrands(int page, int size, String sortDirection);
+
     Page<ArticleResponse> getArticle(int page, int size, String sortDirection);
 
     void saveArticleIn(ArticleRequest articleRequest);
+
+    Page<ArticleResponse> getArticle(int page, int size, String sortBy, String sortDirection);
 
     List<ArticleResponse> getArticleFrom();
 

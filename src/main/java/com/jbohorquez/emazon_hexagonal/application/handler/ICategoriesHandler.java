@@ -11,13 +11,13 @@ public interface ICategoriesHandler {
 
     Page<CategoryResponse> getCategories(int page, int size, String sortDirection);
 
-    void saveCategoryInCategory(CategoryRequest categoryRequest);
+    void saveInCategory(CategoryRequest categoryRequest);
 
-    List<CategoryResponse> getCategoryFromCategory();
+    List<CategoryResponse> getFromCategory();
 
-    CategoryResponse getCategoryFromCategory(Long categoryId);
+    CategoryResponse getFromCategory(Long categoryId);
 
-    void updateCategoryInCategory(CategoryRequest categoryRequest);
+    void updateInCategory(CategoryRequest categoryRequest);
 
-    void deleteCategoryFromCategory(Long categoryId);
+    void deleteFromCategory(Long categoryId);
 }

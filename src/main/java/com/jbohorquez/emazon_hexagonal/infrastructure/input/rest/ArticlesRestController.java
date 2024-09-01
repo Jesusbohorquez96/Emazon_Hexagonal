@@ -3,6 +3,7 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.ArticleRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.ArticleResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.ArticlesHandler;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/articles")
@@ -33,9 +36,10 @@ public class ArticlesRestController {
     public ResponseEntity<Page<ArticleResponse>> getArticles(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection
     ) {
-        Page<ArticleResponse> articles = articlesHandler.getArticle(page, size, sortDirection);
+        Page<ArticleResponse> articles = articlesHandler.getArticle(page, size, sortBy, sortDirection);
         return ResponseEntity.ok(articles);
     }
 
@@ -44,10 +48,17 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "201", description = "Article created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
+
     @PostMapping("/")
-    public ResponseEntity<Void> saveArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
-        articlesHandler.saveArticleIn(articleRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Map<String, String>> saveArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
+        try {
+            articlesHandler.saveArticleIn(articleRequest);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Collections.singletonMap("message", ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Collections.singletonMap("message", ExceptionResponse.ALREADY_EXISTS.getMessage()));
+        }
     }
 
     @Operation(summary = "Get all articles", description = "Returns a list of all articles.")
@@ -58,6 +69,8 @@ public class ArticlesRestController {
     public ResponseEntity<List<ArticleResponse>> getArticleFrom() {
         return ResponseEntity.ok(articlesHandler.getArticleFrom());
     }
+
+
 
     @Operation(summary = "Get an article by ID", description = "Returns a specific article based on its ID.")
     @ApiResponses(value = {

@@ -1,5 +1,6 @@
 package com.jbohorquez.emazon_hexagonal.application.dto;
 
+import com.jbohorquez.emazon_hexagonal.domain.model.Brand;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,14 +16,16 @@ import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 @Setter
 public class BrandRequest {
 
-    @Column(length= NAME_MAX_LENGTH, nullable = false)
+    @NotBlank(message = "Name cannot be blank")
+    @Size(max = NAME_MAX_LENGTH, message = "The name must not exceed" + NAME_MAX_LENGTH + "characters")
     private String name;
 
-    @Column(name = "description", nullable = false, length = DESCRIPTION_BRAND_MAX_LENGTH)
-    @NotBlank(message = "Brand description is mandatory")
-    @Size(max = DESCRIPTION_BRAND_MAX_LENGTH)
+    @NotBlank(message = "Description cannot be blank")
+    @Size(max = DESCRIPTION_BRAND_MAX_LENGTH, message = "The description must not exceed 50 characters")
     private String description;
 
-    public BrandRequest(String newBrand, String newDescription) {
+    public BrandRequest(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 }

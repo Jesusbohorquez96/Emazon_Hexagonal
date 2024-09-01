@@ -11,17 +11,28 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ControllerAdvisor {
 
     private static final String MESSAGE = "message";
 
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<List<ErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        List<ErrorResponse> errors = ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> new ErrorResponse(fieldError.getField(), fieldError.getDefaultMessage()))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<Map<String, String>> AlreadyExistsException(
             AlreadyExistsException AlreadyExistsException) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.CATEGORY_ALREADY_EXISTS.getMessage()));
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NOT_EXISTS.getMessage()));
     }
 
     @ExceptionHandler(NoDataFoundException.class)
@@ -42,16 +53,6 @@ public class ControllerAdvisor {
     public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INTERNAL_ERROR.getMessage()));
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        List<ErrorResponse> errors = new ArrayList<>();
-        ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
-            ErrorResponse error = new ErrorResponse(fieldError.getField(), fieldError.getDefaultMessage());
-            errors.add(error);
-        });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
 }

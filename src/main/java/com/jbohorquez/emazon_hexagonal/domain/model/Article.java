@@ -9,14 +9,16 @@ public class Article {
     private String description;
     private Integer stock;
     private Double price;
+    private Brand brand;
     private Set<Category> categories;
 
-    public Article(Long id, String name, String description, Integer stock, Double price, Set<Category> categories) {
+    public Article(Long id, String name, String description, Integer stock, Double price, Brand brand, Set<Category> categories) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.stock = stock;
         this.price = price;
+        this.brand = brand;
         this.categories = categories;
     }
 
@@ -60,6 +62,14 @@ public class Article {
         this.price = price;
     }
 
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
     public Set<Category> getCategories() {
         return categories;
     }
@@ -67,7 +77,6 @@ public class Article {
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
-
 
     @Override
     public String toString() {
@@ -77,6 +86,7 @@ public class Article {
                 ", description='" + description + '\'' +
                 ", stock=" + stock +
                 ", price=" + price +
+                ", brand=" + brand +
                 ", categories=" + categories +
                 '}';
     }

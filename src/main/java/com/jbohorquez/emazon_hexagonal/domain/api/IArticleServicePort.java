@@ -17,6 +17,8 @@ public interface IArticleServicePort {
 
     void deleteArticle(Long articleId);
 
+    Page<Article> getArticles(int page, int size, String sorBy, boolean ascending);
+
     Page<Article> getArticles(int page, int size, boolean ascending);
 }
 

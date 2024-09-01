@@ -3,6 +3,9 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.ICategoriesHandler;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exception.AllExistsException;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exception.AlreadyExistsException;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/categories")
@@ -44,10 +49,21 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "201", description = "Category created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
+
     @PostMapping("/")
-    public ResponseEntity<Void> saveInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
-        categoriesHandler.saveCategoryInCategory(categoryRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Map<String, String>> saveInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
+        System.out.println("CategoryRequest: " + categoryRequest);
+        try {
+            categoriesHandler.saveInCategory(categoryRequest);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Collections.singletonMap("message", ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
+        } catch (AllExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Collections.singletonMap("message", ExceptionResponse.INTERNAL_ERROR.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("message", ExceptionResponse.ALREADY_EXISTS.getMessage()));
+        }
     }
 
     @Operation(summary = "Get all categories", description = "Returns a list of all categories.")
@@ -56,7 +72,7 @@ public class CategoriesRestController {
     })
     @GetMapping("/")
     public ResponseEntity<List<CategoryResponse>> getFromCategory() {
-        return ResponseEntity.ok(categoriesHandler.getCategoryFromCategory());
+        return ResponseEntity.ok(categoriesHandler.getFromCategory());
     }
 
     @Operation(summary = "Get a category by ID", description = "Returns a specific category based on its ID.")
@@ -66,7 +82,7 @@ public class CategoriesRestController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getFromCategory(@PathVariable(name = "id") Long categoryId) {
-        return ResponseEntity.ok(categoriesHandler.getCategoryFromCategory(categoryId));
+        return ResponseEntity.ok(categoriesHandler.getFromCategory(categoryId));
     }
 
     @Operation(summary = "Update a category", description = "Updates an existing category in the database.")
@@ -77,18 +93,19 @@ public class CategoriesRestController {
     })
     @PutMapping("/")
     public ResponseEntity<Void> updateInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
-        categoriesHandler.updateCategoryInCategory(categoryRequest);
+        categoriesHandler.updateInCategory(categoryRequest);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Delete a category", description = "Delete an existing category based on its ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Category successfully deleted"),
+            @ApiResponse(responseCode = "200", description = "Category successfully deleted"),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
+
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<Void> deleteFromCategory(@PathVariable Long categoryId) {
-        categoriesHandler.deleteCategoryFromCategory(categoryId);
-        return ResponseEntity.noContent().build();
+        categoriesHandler.deleteFromCategory(categoryId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

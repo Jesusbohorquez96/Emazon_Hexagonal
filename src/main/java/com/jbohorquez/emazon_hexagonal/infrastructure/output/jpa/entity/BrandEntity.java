@@ -9,11 +9,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_BRAND_MAX_LENGTH;
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME_MAX_LENGTH;
-
 
 @Entity
 @Table(name = "brand")
@@ -27,7 +27,6 @@ public class BrandEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Not null max NAME_MAX_LENGTH characters
     @Column(length= NAME_MAX_LENGTH, nullable = false)
     private String name;
 
@@ -38,5 +37,6 @@ public class BrandEntity {
 
 
     @OneToMany(mappedBy = "brand")
-    private Set<ArticleEntity> articles;
+    private List<ArticleEntity> articles;
+
 }
