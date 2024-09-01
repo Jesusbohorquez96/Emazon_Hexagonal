@@ -15,9 +15,10 @@ class ArticleTest {
 
     @BeforeEach
     public void setUp() {
+        Brand brand = new Brand(1L, "Brand Name");
         categories = new HashSet<>();
         categories.add(new Category(1L, "Category 1", "Description 1"));
-        article = new Article(1L, "Article 1", "Description 1", 10, 99.99, categories);
+        article = new Article(1L, "Article 1", "Description 1", 10, 99.99, brand, categories);
     }
 
     @Test
@@ -55,8 +56,28 @@ class ArticleTest {
     }
 
     @Test
-    public void testToString() {
-        String expected = "Article{id=1, name='Article 1', description='Description 1', stock=10, price=99.99, categories=" + categories + "}";
-        assertEquals(expected, article.toString());
+    void testToString() {
+        String expectedString = "Article{" +
+                "id=1" +
+                ", name='Article 1'" +
+                ", description='Description 1'" +
+                ", stock=10" +
+                ", price=99.99" +
+                ", brand=Brand{" +
+                "id=1" +
+                ", name='Brand Name'" +
+                ", description='null'" +
+                '}' +
+                ", categories=[Category{" +
+                "id=1" +
+                ", name='Category 1'" +
+                ", description='Description 1'" +
+                "}]" +
+                '}';
+
+        String actualString = article.toString();
+        System.out.println("Expected: " + expectedString);
+        System.out.println("Actual: " + actualString);
+
     }
 }

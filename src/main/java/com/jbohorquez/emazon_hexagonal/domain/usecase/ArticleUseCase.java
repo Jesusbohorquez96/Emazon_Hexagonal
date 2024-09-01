@@ -43,8 +43,8 @@ public  class ArticleUseCase implements IArticleServicePort {
     }
 
     @Override
-    public Page<Article> getArticles(int page, int size, String sorBy, boolean ascending) {
-        Sort sort = ascending ? Sort.by("name").ascending() : Sort.by("name").descending();
+    public Page<Article> getArticles(int page, int size, String sortBy, boolean ascending) {
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return articlePersistencePort.findAll(pageable);
     }

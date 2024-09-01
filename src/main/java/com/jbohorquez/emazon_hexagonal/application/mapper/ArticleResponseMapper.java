@@ -48,4 +48,6 @@ public interface ArticleResponseMapper {
         response.setBrandName(brand.getName());
         return response;
     }
+
+    ArticleBrandResponse toBrandResponseList(Article article);
 }

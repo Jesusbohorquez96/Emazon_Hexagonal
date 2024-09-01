@@ -1,5 +1,6 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity;
 
+import com.jbohorquez.emazon_hexagonal.domain.model.Brand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,4 +61,5 @@ public class ArticleEntity {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private BrandEntity brand;
+
 }

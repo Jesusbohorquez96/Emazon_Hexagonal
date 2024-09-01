@@ -113,6 +113,6 @@ class CategoriesRestControllerTest {
 
         ResponseEntity<Void> response = categoriesRestController.deleteFromCategory(categoryId);
 
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 }

@@ -15,6 +15,9 @@ public class Brand {
         this.description = description;
     }
 
+    public Brand(long l, String brandName) {
+    }
+
     public Long getId() {
         return id;
     }

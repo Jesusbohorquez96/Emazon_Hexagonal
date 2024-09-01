@@ -62,7 +62,7 @@ public class ArticleJpaAdapter implements IArticlePersistencePort {
     @Override
     public Article getArticleById(Long articleId) {
         return articleEntityMapper.toArticle(articleRepository.findById(articleId)
-                .orElseThrow(AlreadyExistsException::new));
+                .orElseThrow(NoDataFoundException::new));
     }
 
     @Override
@@ -83,7 +83,6 @@ public class ArticleJpaAdapter implements IArticlePersistencePort {
         }
         return articleEntityPage.map(articleEntityMapper::toArticle);
     }
-
 
     @Override
     public Page<Article> getCategories(PageRequest pageRequest) {

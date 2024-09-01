@@ -3,6 +3,7 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.ArticleRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.ArticleResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.ArticlesHandler;
+import com.jbohorquez.emazon_hexagonal.enums.SortByFieldsArticles;
 import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -36,10 +37,10 @@ public class ArticlesRestController {
     public ResponseEntity<Page<ArticleResponse>> getArticles(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "NAME") SortByFieldsArticles sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection
     ) {
-        Page<ArticleResponse> articles = articlesHandler.getArticle(page, size, sortBy, sortDirection);
+        Page<ArticleResponse> articles = articlesHandler.getArticle(page, size, sortBy.getValue(), sortDirection);
         return ResponseEntity.ok(articles);
     }
 
@@ -104,5 +105,4 @@ public class ArticlesRestController {
         articlesHandler.deleteArticleFrom(articleId);
         return ResponseEntity.noContent().build();
     }
-
 }
