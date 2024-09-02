@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,15 +73,16 @@ class CategoryUseCaseTest {
 
     @Test
     void getCategoriesPagedWithSortDirection() {
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name"));
-        Page<Category> categoryPage = new PageImpl<>(Arrays.asList(category), pageRequest, 1);
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "name"));
+        Page<Category> categoryPage = new PageImpl<>(Collections.singletonList(category), pageRequest, 1);
 
         when(categoryPersistencePort.findAll(pageRequest)).thenReturn(categoryPage);
-        Page<Category> result = categoryUseCase.getCategories(0, 10, "asc");
+        Page<Category> result = categoryUseCase.getCategories(0, 10, Sort.Direction.DESC);
 
         assertEquals(1, result.getTotalElements());
         assertEquals(category, result.getContent().get(0));
     }
+
 
     @Test
     void getCategoriesPagedAscending() {
