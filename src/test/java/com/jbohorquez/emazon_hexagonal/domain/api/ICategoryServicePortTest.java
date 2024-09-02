@@ -72,19 +72,6 @@ class ICategoryServicePortTest {
     }
 
     @Test
-    void getCategoriesPagedWithSortDirection() {
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name"));
-        Page<Category> categoryPage = new PageImpl<>(Arrays.asList(category), pageRequest, 1);
-
-        when(categoryPersistencePort.findAll(pageRequest)).thenReturn(categoryPage);
-        Page<Category> result = categoryUseCase.getCategories(0, 10, "asc");
-
-        assertNotNull(result);  // Verifica que el resultado no sea null
-        assertEquals(1, result.getTotalElements());
-        assertEquals(category, result.getContent().get(0));
-    }
-
-    @Test
     void getCategoriesPagedAscending() {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("name").ascending());
         Page<Category> categoryPage = new PageImpl<>(Arrays.asList(category), pageRequest, 1);

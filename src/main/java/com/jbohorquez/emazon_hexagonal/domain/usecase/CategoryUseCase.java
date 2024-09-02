@@ -45,20 +45,15 @@ public  class CategoryUseCase implements ICategoryServicePort {
 
     @Override
     public Page<Category> getCategories(int page, int size, boolean ascending) {
-        String sortDirection = ascending ? "asc" : "desc";
-        return getCategories(page, size, sortDirection);
+        Sort.Direction direction = ascending ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return getCategories(page, size, direction);
     }
 
-
     @Override
-    public Page<Category> getCategories(int pageNumber, int pageSize, String sortDirection) {
-        Sort sort = Sort.by("name");
-        if ("desc".equalsIgnoreCase(sortDirection)) {
-            sort = sort.descending();
-        } else {
-            sort = sort.ascending();
-        }
+    public Page<Category> getCategories(int pageNumber, int pageSize, Sort.Direction sortDirection) {
+        Sort sort = Sort.by(sortDirection, "name");
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return categoryPersistencePort.findAll(pageable);
     }
+
 }

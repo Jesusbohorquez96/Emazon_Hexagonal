@@ -22,6 +22,10 @@ public class Article {
         this.categories = categories;
     }
 
+    public Article() {
+
+    }
+
     public Long getId() {
         return id;
     }
