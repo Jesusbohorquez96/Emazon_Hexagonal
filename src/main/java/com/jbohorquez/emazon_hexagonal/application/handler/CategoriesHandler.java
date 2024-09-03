@@ -15,6 +15,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESC;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -26,7 +28,7 @@ public class CategoriesHandler implements ICategoriesHandler {
 
     @Override
     public Page<CategoryResponse> getCategories(int page, int size, String sortDirection) {
-        Sort.Direction direction = "desc".equalsIgnoreCase(sortDirection) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort.Direction direction = DESC.equalsIgnoreCase(sortDirection) ? Sort.Direction.DESC : Sort.Direction.ASC;
         return categoryServicePort.getCategories(page, size, direction)
                 .map(categoryResponseMapper::toResponseList);
     }

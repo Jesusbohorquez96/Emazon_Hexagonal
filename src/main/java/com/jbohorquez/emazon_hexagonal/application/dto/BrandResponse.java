@@ -13,5 +13,4 @@ public class BrandResponse {
 
     public BrandResponse(long l, String brand1, String description1) {
     }
-
 }

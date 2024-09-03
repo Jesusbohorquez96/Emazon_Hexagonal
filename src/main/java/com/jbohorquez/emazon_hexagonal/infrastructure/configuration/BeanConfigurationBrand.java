@@ -1,6 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.configuration;
 
-
 import com.jbohorquez.emazon_hexagonal.domain.api.BrandServicePort;
 import com.jbohorquez.emazon_hexagonal.domain.model.Brand;
 import com.jbohorquez.emazon_hexagonal.domain.spi.BrandPersistencePort;

@@ -19,7 +19,7 @@ public interface UserPersistencePort {
 
         void deleteUser(Long userId);
 
-        Page<User> getUsers(PageRequest pageRequest);
-
         Page<User> findAllUser(Pageable pageable);
+
+        Page<User> getUsers(PageRequest pageRequest);
 }

@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME;
+
 public  class CategoryUseCase implements ICategoryServicePort {
 
     private final ICategoryPersistencePort categoryPersistencePort;
@@ -51,9 +53,8 @@ public  class CategoryUseCase implements ICategoryServicePort {
 
     @Override
     public Page<Category> getCategories(int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sort = Sort.by(sortDirection, "name");
+        Sort sort = Sort.by(sortDirection, NAME);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return categoryPersistencePort.findAll(pageable);
     }
-
 }

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import java.util.List;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME;
+
 public  class ArticleUseCase implements IArticleServicePort {
 
     private final IArticlePersistencePort articlePersistencePort;
@@ -51,7 +53,7 @@ public  class ArticleUseCase implements IArticleServicePort {
 
     @Override
     public Page<Article> getArticles(int page, int size, boolean ascending) {
-        Sort sort = Sort.by("name");
+        Sort sort = Sort.by(NAME);
         sort = ascending ? sort.ascending() : sort.descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return articlePersistencePort.findAll(pageable);

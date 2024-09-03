@@ -18,7 +18,6 @@ public class ControllerAdvisor {
 
     private static final String MESSAGE = "message";
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<ErrorResponse> errors = ex.getBindingResult().getFieldErrors().stream()
@@ -26,7 +25,6 @@ public class ControllerAdvisor {
                 .collect(Collectors.toList());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
-
 
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<Map<String, String>> AlreadyExistsException(
@@ -54,5 +52,4 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INTERNAL_ERROR.getMessage()));
     }
-
 }

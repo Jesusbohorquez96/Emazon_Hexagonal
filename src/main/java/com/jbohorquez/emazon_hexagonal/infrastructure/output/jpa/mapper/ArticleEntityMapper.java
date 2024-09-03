@@ -1,6 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.mapper;
 
-
 import com.jbohorquez.emazon_hexagonal.domain.model.Article;
 import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity.ArticleEntity;
 import org.mapstruct.Mapper;

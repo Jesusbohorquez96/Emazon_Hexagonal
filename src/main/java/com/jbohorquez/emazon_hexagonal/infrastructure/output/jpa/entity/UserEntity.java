@@ -1,18 +1,27 @@
-package com.jbohorquez.emazon_hexagonal.application.dto;
+package com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
-@Data
+@Entity
+@Table(name = "user")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class UserRequest {
+public class UserEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank(message = "Name is required")
     private String name;

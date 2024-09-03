@@ -3,7 +3,6 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.BrandRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.BrandResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.BrandsHandler;
-import com.jbohorquez.emazon_hexagonal.infrastructure.exception.AllExistsException;
 import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,6 +19,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
 @RestController
 @RequestMapping("/brands")
 @RequiredArgsConstructor
@@ -35,9 +36,9 @@ public class BrandsRestController {
     })
     @GetMapping
     public ResponseEntity<Page<BrandResponse>> getBrands(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "asc") String sortDirection
+            @RequestParam(defaultValue = PAGE) int page,
+            @RequestParam(defaultValue = SIZE) int size,
+            @RequestParam(defaultValue = ASC) String sortDirection
     ) {
         Page<BrandResponse> brands = brandsHandler.getBrands(page, size, sortDirection);
         return ResponseEntity.ok(brands);
@@ -104,5 +105,4 @@ public class BrandsRestController {
         brandsHandler.deleteFromBrand(brandId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }

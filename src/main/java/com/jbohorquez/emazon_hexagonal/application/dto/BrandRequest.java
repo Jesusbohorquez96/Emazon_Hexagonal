@@ -15,11 +15,11 @@ import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 public class BrandRequest {
 
     @NotBlank(message = "Name cannot be blank")
-    @Size(max = NAME_MAX_LENGTH, message = "The name must not exceed" + NAME_MAX_LENGTH + "characters")
+    @Size(max = NAME_MAX_LENGTH, message = "The name must not exceed " + NAME_MAX_LENGTH + " characters")
     private String name;
 
     @NotBlank(message = "Description cannot be blank")
-    @Size(max = DESCRIPTION_BRAND_MAX_LENGTH, message = "The description must not exceed 50 characters")
+    @Size(max = DESCRIPTION_BRAND_MAX_LENGTH, message = "The description must not exceed " + DESCRIPTION_BRAND_MAX_LENGTH + " characters")
     private String description;
 
     public BrandRequest(String name, String description) {

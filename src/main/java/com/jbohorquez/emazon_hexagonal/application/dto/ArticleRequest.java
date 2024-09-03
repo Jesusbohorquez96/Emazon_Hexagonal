@@ -9,8 +9,7 @@ import javax.validation.constraints.*;
 
 import java.util.Set;
 
-import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_BRAND_MAX_LENGTH;
-import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME_MAX_LENGTH;
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
 @Data
 @Getter
@@ -29,13 +28,13 @@ public class ArticleRequest {
 
     @Column(nullable = false)
     @NotNull(message = "Stock is mandatory")
-    @Min(value = 0, message = "Stock cannot be negative")
+    @Min(value = ZERO, message = "Stock cannot be negative")
     private Integer stock;
 
     @Column(nullable = false)
     @NotNull(message = "Price is mandatory")
-    @Min(value = 0, message = "Price cannot be negative")
-    @Digits(integer = 10, fraction = 2, message = "Price format is invalid")
+    @Min(value = ZERO, message = "Price cannot be negative")
+    @Digits(integer = INTEGERS, fraction = DECIMALS, message = "Price format is invalid")
     private Double price;
 
     @NotEmpty(message = "At least one category is required")
