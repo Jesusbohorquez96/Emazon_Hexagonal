@@ -71,8 +71,6 @@ public class ArticlesRestController {
         return ResponseEntity.ok(articlesHandler.getArticleFrom());
     }
 
-
-
     @Operation(summary = "Get an article by ID", description = "Returns a specific article based on its ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Article returned successfully"),
@@ -103,6 +101,6 @@ public class ArticlesRestController {
     @DeleteMapping("/{articleId}")
     public ResponseEntity<Void> deleteArticleFrom(@PathVariable Long articleId) {
         articlesHandler.deleteArticleFrom(articleId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

@@ -22,9 +22,7 @@ public class Article {
         this.categories = categories;
     }
 
-    public Article() {
-
-    }
+    public Article() {}
 
     public Long getId() {
         return id;
@@ -80,11 +78,6 @@ public class Article {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
-    }
-
-    @Override
-    public String toString() {
-        return null;
     }
 
 }

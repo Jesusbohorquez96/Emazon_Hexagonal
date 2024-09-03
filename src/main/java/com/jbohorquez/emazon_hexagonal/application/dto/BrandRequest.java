@@ -1,11 +1,9 @@
 package com.jbohorquez.emazon_hexagonal.application.dto;
 
-import com.jbohorquez.emazon_hexagonal.domain.model.Brand;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 

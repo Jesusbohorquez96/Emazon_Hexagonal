@@ -1,6 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.application.dto;
 
-import com.jbohorquez.emazon_hexagonal.domain.model.Category;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +7,6 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.validation.constraints.*;
 
-import java.util.Collections;
 import java.util.Set;
 
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_BRAND_MAX_LENGTH;
