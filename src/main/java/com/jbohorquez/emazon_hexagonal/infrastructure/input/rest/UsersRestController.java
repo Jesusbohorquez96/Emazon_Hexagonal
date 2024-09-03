@@ -1,5 +1,6 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 
+import com.jbohorquez.emazon_hexagonal.application.dto.LoginRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.UserRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.UserResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.IUsersHandler;
@@ -50,10 +51,8 @@ public class UsersRestController {
             @ApiResponse(responseCode = "201", description = "User created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
-
     @PostMapping("/")
     public ResponseEntity<Map<String, String>> saveInUser(@Valid @RequestBody UserRequest userRequest) {
-        System.out.println("UserRequest: " + userRequest);
         try {
             usersHandler.saveInUser(userRequest);
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -88,7 +87,7 @@ public class UsersRestController {
 
     @Operation(summary = "Update a user", description = "Updates an existing user in the database.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Categoría actualizada exitosamente"),
+            @ApiResponse(responseCode = "204", description = "Users actualizada exitosamente"),
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
@@ -109,4 +108,16 @@ public class UsersRestController {
         usersHandler.deleteFromUser(userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
+        boolean isValid = usersHandler.validateUser(loginRequest.getEmail(), loginRequest.getPassword());
+        if (isValid) {
+            return ResponseEntity.ok(Collections.singletonMap("message", "Login successful"));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Collections.singletonMap("message", "Invalid email or password"));
+        }
+    }
+
 }

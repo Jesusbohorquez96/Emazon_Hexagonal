@@ -20,11 +20,13 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        System.out.println("Validation exception captured");
         List<ErrorResponse> errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> new ErrorResponse(fieldError.getField(), fieldError.getDefaultMessage()))
                 .collect(Collectors.toList());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
 
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<Map<String, String>> AlreadyExistsException(

@@ -1,7 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.configuration;
 
-import com.jbohorquez.emazon_hexagonal.domain.api.IUserServicePort;
-import com.jbohorquez.emazon_hexagonal.domain.model.User;
 import com.jbohorquez.emazon_hexagonal.domain.spi.UserPersistencePort;
 import com.jbohorquez.emazon_hexagonal.domain.usecase.UserUseCase;
 import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.adapter.UserJpaAdapter;
@@ -10,7 +8,7 @@ import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.repository.IUse
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
@@ -25,12 +23,8 @@ public class BeanConfigurationUser {
     }
 
     @Bean
-    public IUserServicePort userServicePort() {
-        return new UserUseCase(userPersistencePort()) {
-            @Override
-            public Page<User> getUsers(int page, int size, boolean ascending) {
-                return null;
-            }
+    public UserUseCase userUseCase(UserPersistencePort userPersistencePort, PasswordEncoder passwordEncoder) {
+        return new UserUseCase(userPersistencePort, passwordEncoder) {
         };
     }
 }

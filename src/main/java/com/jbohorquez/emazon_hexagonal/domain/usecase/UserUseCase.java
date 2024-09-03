@@ -7,22 +7,35 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME;
 
 public abstract class UserUseCase implements IUserServicePort {
 
     private final UserPersistencePort userPersistencePort;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserUseCase(UserPersistencePort userPersistencePort) {
+    public UserUseCase(UserPersistencePort userPersistencePort, PasswordEncoder passwordEncoder) {
         this.userPersistencePort = userPersistencePort;
+        this.passwordEncoder = passwordEncoder;
+
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userPersistencePort.findByEmail(email);
     }
 
     @Override
     public void saveUser(User user) {
-      userPersistencePort.saveUser(user);
+        // Encriptar la contraseña antes de guardar
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+        userPersistencePort.saveUser(user);
     }
 
     @Override
@@ -37,6 +50,9 @@ public abstract class UserUseCase implements IUserServicePort {
 
     @Override
     public void updateUser(User user) {
+        // Encriptar la contraseña antes de actualizar
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         userPersistencePort.updateUser(user);
     }
 
@@ -51,6 +67,4 @@ public abstract class UserUseCase implements IUserServicePort {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return userPersistencePort.findAllUser(pageable);
     }
-
-    public abstract Page<User> getUsers(int page, int size, boolean ascending);
 }

@@ -1,5 +1,6 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity;
 
+import com.jbohorquez.emazon_hexagonal.application.validation.Adult;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,7 @@ public class UserEntity {
     private String phone;
 
     @NotNull(message = "Birthdate is required")
+    @Adult(message = "User must be at least 18 years old")
     private LocalDate birthdate;
 
     @NotBlank(message = "Email is required")

@@ -19,4 +19,6 @@ public interface IUsersHandler {
     void updateInUser(UserRequest userRequest);
 
     void deleteFromUser(Long userId);
+
+    boolean validateUser(String email, String password);
 }

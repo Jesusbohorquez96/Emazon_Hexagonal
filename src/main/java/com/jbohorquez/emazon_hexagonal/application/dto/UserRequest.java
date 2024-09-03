@@ -1,5 +1,6 @@
 package com.jbohorquez.emazon_hexagonal.application.dto;
 
+import com.jbohorquez.emazon_hexagonal.application.validation.Adult;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class UserRequest {
     @Pattern(regexp = PHONE_NUMBER, message = "Phone number must be a maximum of MAX_PHONE characters and may include the '+' symbol")
     private String phone;
 
+    @Adult(message = "User must be at least 18 years old")
     @NotNull(message = "Birthdate is required")
     private LocalDate birthdate;
 

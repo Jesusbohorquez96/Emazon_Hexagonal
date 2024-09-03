@@ -1,5 +1,6 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.repository;
 
+import com.jbohorquez.emazon_hexagonal.domain.model.User;
 import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,6 @@ public interface IUserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByName(String name);
 
     void deleteById(Long userId);
+
+    Optional<User> findByEmail(String email);
 }
