@@ -20,6 +20,6 @@ public interface ICategoryServicePort {
 
     Page<Category> getCategories(int page, int size, boolean ascending);
 
-    Page<Category> getCategories(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    Page<Category> getCategories(int pageNumber, int pageSize, String sortDirection);
 }
 

@@ -49,7 +49,6 @@ public  class CategoryUseCase implements ICategoryServicePort {
         return getCategories(page, size, sortDirection);
     }
 
-
     @Override
     public Page<Category> getCategories(int pageNumber, int pageSize, String sortDirection) {
         Sort sort = Sort.by("name");
