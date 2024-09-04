@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-
 public interface BrandServicePort {
 
     void saveBrand(Brand brand);

@@ -13,7 +13,6 @@ import org.mapstruct.ReportingPolicy;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
 @Mapper(componentModel = "spring",
         unmappedSourcePolicy = ReportingPolicy.IGNORE,
         unmappedTargetPolicy = ReportingPolicy.IGNORE,

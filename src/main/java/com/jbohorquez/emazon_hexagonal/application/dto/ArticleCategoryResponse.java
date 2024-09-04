@@ -9,6 +9,4 @@ public class ArticleCategoryResponse {
 
     private Long categoryId;
     private String categoryName;
-
-
 }

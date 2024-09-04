@@ -23,7 +23,6 @@ public class BrandJpaAdapter implements BrandPersistencePort {
 
     private final BrandEntityMapper brandEntityMapper;
 
-
     @Override
     public void saveBrand(Brand brand) {
         if (brandRepository.findByName(brand.getName()).isPresent()) {

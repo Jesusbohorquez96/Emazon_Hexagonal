@@ -18,9 +18,9 @@ public class ControllerAdvisor {
 
     private static final String MESSAGE = "message";
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        System.out.println("Validation exception captured");
         List<ErrorResponse> errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> new ErrorResponse(fieldError.getField(), fieldError.getDefaultMessage()))
                 .collect(Collectors.toList());
@@ -54,5 +54,4 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INTERNAL_ERROR.getMessage()));
     }
-
 }

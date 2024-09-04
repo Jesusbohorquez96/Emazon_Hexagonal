@@ -10,6 +10,9 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESC;
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME;
+
 public class BrandUseCase implements BrandServicePort {
 
     private final BrandPersistencePort brandPersistencePort;
@@ -45,8 +48,8 @@ public class BrandUseCase implements BrandServicePort {
 
     @Override
     public Page<Brand> getBrands(int pageNumber, int pageSize, String sortDirection) {
-        Sort sort = Sort.by("name");
-        if ("desc".equalsIgnoreCase(sortDirection)) {
+        Sort sort = Sort.by(NAME);
+        if (DESC.equalsIgnoreCase(sortDirection)) {
             sort = sort.descending();
         } else {
             sort = sort.ascending();
@@ -56,10 +59,8 @@ public class BrandUseCase implements BrandServicePort {
     }
     @Override
     public Page<Brand> getBrands(int page, int size, boolean ascending) {
-        Sort sort = ascending ? Sort.by("name").ascending() : Sort.by("name").descending();
+        Sort sort = ascending ? Sort.by(NAME).ascending() : Sort.by(NAME).descending();
         PageRequest pageRequest = PageRequest.of(page, size, sort);
         return brandPersistencePort.findAll(pageRequest);
     }
-//
-//    public abstract Page<Brand> getBrands(int page, int size, boolean ascending);
 }

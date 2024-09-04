@@ -9,5 +9,4 @@ public class ArticleBrandResponse {
 
     private Long brandId;
     private String brandName;
-
 }

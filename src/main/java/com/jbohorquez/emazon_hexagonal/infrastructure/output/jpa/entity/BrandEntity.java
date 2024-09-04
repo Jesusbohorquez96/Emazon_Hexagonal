@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import java.util.List;
-import java.util.Set;
 
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_BRAND_MAX_LENGTH;
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME_MAX_LENGTH;
@@ -35,8 +34,6 @@ public class BrandEntity {
     @Size(max = DESCRIPTION_BRAND_MAX_LENGTH, message = "Brand description cannot be more than DESCRIPTION_BRAND_MAX_LENGTH characters")
     private String description;
 
-
     @OneToMany(mappedBy = "brand")
     private List<ArticleEntity> articles;
-
 }

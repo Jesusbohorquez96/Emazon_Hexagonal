@@ -1,6 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.mapper;
 
-
 import com.jbohorquez.emazon_hexagonal.domain.model.Brand;
 import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity.BrandEntity;
 import org.mapstruct.Mapper;

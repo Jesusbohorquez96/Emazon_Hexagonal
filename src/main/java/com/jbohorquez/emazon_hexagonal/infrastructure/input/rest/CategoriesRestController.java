@@ -4,7 +4,6 @@ import com.jbohorquez.emazon_hexagonal.application.dto.CategoryRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.ICategoriesHandler;
 import com.jbohorquez.emazon_hexagonal.infrastructure.exception.AllExistsException;
-import com.jbohorquez.emazon_hexagonal.infrastructure.exception.AlreadyExistsException;
 import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,6 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
@@ -36,9 +37,9 @@ public class CategoriesRestController {
     })
     @GetMapping
     public ResponseEntity<Page<CategoryResponse>> getCategories(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "asc") String sortDirection
+            @RequestParam(defaultValue = PAGE) int page,
+            @RequestParam(defaultValue = SIZE) int size,
+            @RequestParam(defaultValue = ASC) String sortDirection
     ) {
         Page<CategoryResponse> categories = categoriesHandler.getCategories(page, size, sortDirection);
         return ResponseEntity.ok(categories);
@@ -102,7 +103,6 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "200", description = "Category successfully deleted"),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
-
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<Void> deleteFromCategory(@PathVariable Long categoryId) {
         categoriesHandler.deleteFromCategory(categoryId);

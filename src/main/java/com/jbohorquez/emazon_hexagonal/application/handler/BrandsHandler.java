@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-
 public interface BrandsHandler {
 
     Page<BrandResponse> getBrands(int page, int size, String sortDirection);

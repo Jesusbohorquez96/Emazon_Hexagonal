@@ -1,6 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.application.handler;
 
-import com.jbohorquez.emazon_hexagonal.application.dto.ArticleBrandResponse;
 import com.jbohorquez.emazon_hexagonal.application.dto.ArticleRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.ArticleResponse;
 import com.jbohorquez.emazon_hexagonal.application.mapper.ArticleRequestMapper;

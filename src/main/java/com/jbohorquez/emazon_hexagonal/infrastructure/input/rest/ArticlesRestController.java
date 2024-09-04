@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
 @RestController
 @RequestMapping("/articles")
 @RequiredArgsConstructor
@@ -35,10 +37,10 @@ public class ArticlesRestController {
     })
     @GetMapping
     public ResponseEntity<Page<ArticleResponse>> getArticles(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "NAME") SortByFieldsArticles sortBy,
-            @RequestParam(defaultValue = "asc") String sortDirection
+            @RequestParam(defaultValue = PAGE) int page,
+            @RequestParam(defaultValue = SIZE) int size,
+            @RequestParam(defaultValue = NAME) SortByFieldsArticles sortBy,
+            @RequestParam(defaultValue = ASC) String sortDirection
     ) {
         Page<ArticleResponse> articles = articlesHandler.getArticle(page, size, sortBy.getValue(), sortDirection);
         return ResponseEntity.ok(articles);
@@ -71,8 +73,6 @@ public class ArticlesRestController {
         return ResponseEntity.ok(articlesHandler.getArticleFrom());
     }
 
-
-
     @Operation(summary = "Get an article by ID", description = "Returns a specific article based on its ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Article returned successfully"),
@@ -103,6 +103,6 @@ public class ArticlesRestController {
     @DeleteMapping("/{articleId}")
     public ResponseEntity<Void> deleteArticleFrom(@PathVariable Long articleId) {
         articlesHandler.deleteArticleFrom(articleId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

@@ -1,6 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity;
 
-import com.jbohorquez.emazon_hexagonal.domain.model.Brand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +8,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-
 import java.util.Set;
 
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_BRAND_MAX_LENGTH;
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME_MAX_LENGTH;
-
 
 @Entity
 @Table(name = "article")

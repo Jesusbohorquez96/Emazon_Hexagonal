@@ -17,5 +17,4 @@ public enum ExceptionResponse {
     ExceptionResponse(String message) {
         this.message = message;
     }
-
 }

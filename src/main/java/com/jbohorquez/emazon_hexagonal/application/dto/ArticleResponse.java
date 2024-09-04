@@ -1,7 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.application.dto;
 
-import com.jbohorquez.emazon_hexagonal.domain.model.Brand;
-import com.jbohorquez.emazon_hexagonal.domain.model.Category;
 import lombok.Getter;
 import lombok.Setter;
 

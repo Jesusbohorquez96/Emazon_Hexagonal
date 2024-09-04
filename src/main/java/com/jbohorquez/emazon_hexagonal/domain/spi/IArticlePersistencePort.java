@@ -24,5 +24,4 @@ public interface IArticlePersistencePort {
     Page<Article> getCategories(PageRequest pageRequest);
 
     Page<Article> findAll(Pageable pageable);
-
 }

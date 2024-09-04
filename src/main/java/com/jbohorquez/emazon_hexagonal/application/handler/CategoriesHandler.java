@@ -8,7 +8,6 @@ import com.jbohorquez.emazon_hexagonal.domain.api.ICategoryServicePort;
 import com.jbohorquez.emazon_hexagonal.domain.model.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
@@ -26,8 +25,7 @@ public class CategoriesHandler implements ICategoriesHandler {
 
     @Override
     public Page<CategoryResponse> getCategories(int page, int size, String sortDirection) {
-        Sort.Direction direction = "desc".equalsIgnoreCase(sortDirection) ? Sort.Direction.DESC : Sort.Direction.ASC;
-        return categoryServicePort.getCategories(page, size, direction)
+        return categoryServicePort.getCategories(page, size, sortDirection)
                 .map(categoryResponseMapper::toResponseList);
     }
 

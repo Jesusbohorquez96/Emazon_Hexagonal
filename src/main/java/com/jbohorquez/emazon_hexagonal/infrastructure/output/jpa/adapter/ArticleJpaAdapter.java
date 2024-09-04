@@ -16,8 +16,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_MAX_LENGTH;
-import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME_MAX_LENGTH;
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
 @RequiredArgsConstructor
 public class ArticleJpaAdapter implements IArticlePersistencePort {
@@ -27,14 +26,12 @@ public class ArticleJpaAdapter implements IArticlePersistencePort {
 
     @Override
     public void saveArticle(Article article) {
-        System.out.println("hola mundo como esta " + article.getCategories().size());
-        if (article.getCategories().size() > 3) {
+        if (article.getCategories().size() > ASSOCIATED) {
             throw new IllegalArgumentException("Article can have 1 to 3 categories");
         }
         if (article.getCategories().isEmpty()) {
             throw new IllegalArgumentException("Article must have at least one category");
         }
-        System.out.println("hola " + article);
         if (article.getCategories().stream().distinct().count() != article.getCategories().size()) {
             throw new IllegalArgumentException("Categories must be different");
         }

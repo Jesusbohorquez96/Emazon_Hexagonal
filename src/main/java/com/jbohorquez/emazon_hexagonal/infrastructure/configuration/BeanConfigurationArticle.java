@@ -1,6 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.configuration;
 
-
 import com.jbohorquez.emazon_hexagonal.domain.api.IArticleServicePort;
 import com.jbohorquez.emazon_hexagonal.domain.model.Article;
 import com.jbohorquez.emazon_hexagonal.domain.spi.IArticlePersistencePort;
