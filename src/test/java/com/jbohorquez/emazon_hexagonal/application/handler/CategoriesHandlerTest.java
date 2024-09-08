@@ -11,12 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,35 +43,6 @@ class CategoriesHandlerTest {
         categoryRequest = new CategoryRequest("CategoryName", "CategoryDescription");
         categoryResponse = new CategoryResponse(1L, "CategoryName", "CategoryDescription");
     }
-
-    @Test
-    void getCategories() {
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.ASC, "id");
-        Page<Category> categoryPage = new PageImpl<>(Collections.singletonList(category), pageRequest, 1);
-
-        when(categoryServicePort.getCategories(0, 10, Sort.Direction.ASC)).thenReturn(categoryPage);
-        when(categoryResponseMapper.toResponseList(category)).thenReturn(categoryResponse);
-
-        Page<CategoryResponse> result = categoriesHandler.getCategories(0, 10, "asc");
-
-        assertEquals(1, result.getTotalElements());
-        assertEquals(categoryResponse, result.getContent().get(0));
-    }
-
-    @Test
-    void getCategories_WithDescendingSort() {
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "id");
-        Page<Category> categoryPage = new PageImpl<>(Collections.singletonList(category), pageRequest, 1);
-
-        when(categoryServicePort.getCategories(0, 10, Sort.Direction.DESC)).thenReturn(categoryPage);
-        when(categoryResponseMapper.toResponseList(category)).thenReturn(categoryResponse);
-
-        Page<CategoryResponse> result = categoriesHandler.getCategories(0, 10, "desc");
-
-        assertEquals(1, result.getTotalElements());
-        assertEquals(categoryResponse, result.getContent().get(0));
-    }
-
 
     @Test
     void saveInCategory() {

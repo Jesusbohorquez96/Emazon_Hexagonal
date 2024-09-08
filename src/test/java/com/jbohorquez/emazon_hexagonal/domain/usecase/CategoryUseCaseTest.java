@@ -77,7 +77,7 @@ class CategoryUseCaseTest {
         Page<Category> categoryPage = new PageImpl<>(Collections.singletonList(category), pageRequest, 1);
 
         when(categoryPersistencePort.findAll(pageRequest)).thenReturn(categoryPage);
-        Page<Category> result = categoryUseCase.getCategories(0, 10, Sort.Direction.DESC);
+        Page<Category> result = categoryUseCase.getCategories(0, 10, String.valueOf(Sort.Direction.DESC));
 
         assertEquals(1, result.getTotalElements());
         assertEquals(category, result.getContent().get(0));
