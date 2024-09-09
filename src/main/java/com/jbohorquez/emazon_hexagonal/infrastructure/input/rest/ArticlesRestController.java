@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,6 +37,7 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
+    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
     public ResponseEntity<Page<ArticleResponse>> getArticles(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size,
@@ -53,6 +55,7 @@ public class ArticlesRestController {
     })
 
     @PostMapping("/")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Map<String, String>> saveArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
         try {
             articlesHandler.saveArticleIn(articleRequest);
@@ -69,6 +72,7 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "200", description = "List of articles returned successfully")
     })
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
     public ResponseEntity<List<ArticleResponse>> getArticleFrom() {
         return ResponseEntity.ok(articlesHandler.getArticleFrom());
     }
@@ -79,6 +83,7 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "404", description = "Article not found")
     })
     @GetMapping("/{brId}")
+    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
     public ResponseEntity<ArticleResponse> getArticleFrom(@PathVariable(name = "brId") Long articleId) {
         return ResponseEntity.ok(articlesHandler.getArticleFrom(articleId));
     }
@@ -90,6 +95,7 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "404", description = "Article not found")
     })
     @PutMapping("/")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Void> updateArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
         articlesHandler.updateArticleIn(articleRequest);
         return ResponseEntity.noContent().build();
@@ -101,6 +107,7 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "404", description = "Article not found")
     })
     @DeleteMapping("/{articleId}")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Void> deleteArticleFrom(@PathVariable Long articleId) {
         articlesHandler.deleteArticleFrom(articleId);
         return ResponseEntity.ok().build();

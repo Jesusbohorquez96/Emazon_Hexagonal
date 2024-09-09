@@ -17,7 +17,10 @@ public class ValidationConstants {
     public static final String DESC = "desc";
     public static final String PHONE_NUMBER = "^\\+?[0-9]{1,13}$";
     public static final String NAME = "name";
-
+    public static final String PRIVATE = "294A404E635266556A586E327235753878214125442A472D4B6150645367566B";
+    public static final String AUX = "aux_bodega";
+    public static final String CUSTOMER = "customer";
+    public static final String ADMIN = "admin";
 
     private ValidationConstants() {
         throw new IllegalStateException("Utility class");

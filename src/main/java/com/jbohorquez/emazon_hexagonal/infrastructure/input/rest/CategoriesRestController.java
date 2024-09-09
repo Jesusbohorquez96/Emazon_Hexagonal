@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,6 +37,7 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
+    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
     public ResponseEntity<Page<CategoryResponse>> getCategories(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size,
@@ -43,8 +45,8 @@ public class CategoriesRestController {
     ) {
         Page<CategoryResponse> categories = categoriesHandler.getCategories(page, size, sortDirection);
         return ResponseEntity.ok(categories);
-    }
 
+    }
     @Operation(summary = "Save a new category", description = "Saves a new category to the database.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Category created successfully"),
@@ -52,6 +54,7 @@ public class CategoriesRestController {
     })
 
     @PostMapping("/")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Map<String, String>> saveInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         System.out.println("CategoryRequest: " + categoryRequest);
         try {
@@ -72,6 +75,7 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "200", description = "Category list returned successfully")
     })
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
     public ResponseEntity<List<CategoryResponse>> getFromCategory() {
         return ResponseEntity.ok(categoriesHandler.getFromCategory());
     }
@@ -82,6 +86,7 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
     public ResponseEntity<CategoryResponse> getFromCategory(@PathVariable(name = "id") Long categoryId) {
         return ResponseEntity.ok(categoriesHandler.getFromCategory(categoryId));
     }
@@ -93,6 +98,7 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @PutMapping("/")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Void> updateInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         categoriesHandler.updateInCategory(categoryRequest);
         return ResponseEntity.noContent().build();
@@ -104,6 +110,7 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @DeleteMapping("/{categoryId}")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Void> deleteFromCategory(@PathVariable Long categoryId) {
         categoriesHandler.deleteFromCategory(categoryId);
         return ResponseEntity.status(HttpStatus.OK).build();

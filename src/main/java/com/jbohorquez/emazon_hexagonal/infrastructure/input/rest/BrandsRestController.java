@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,12 +36,14 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
+    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
     public ResponseEntity<Page<BrandResponse>> getBrands(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size,
             @RequestParam(defaultValue = ASC) String sortDirection
     ) {
         Page<BrandResponse> brands = brandsHandler.getBrands(page, size, sortDirection);
+        System.out.println("Brands: " + brands);
         return ResponseEntity.ok(brands);
     }
 
@@ -51,6 +54,7 @@ public class BrandsRestController {
     })
 
     @PostMapping("/")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Map<String, String>> saveInBrand(@Valid @RequestBody BrandRequest brandRequest) {
         System.out.println("BrandRequest: " + brandRequest);
         try {
@@ -63,12 +67,12 @@ public class BrandsRestController {
         }
     }
 
-
     @Operation(summary = "Get all brands", description = "Returns a list of all brands.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of brands returned successfully")
     })
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
     public ResponseEntity<List<BrandResponse>> getFromBrand() {
         return ResponseEntity.ok(brandsHandler.getFromBrand());
     }
@@ -79,6 +83,7 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "404", description = "Brand not found")
     })
     @GetMapping("/{brId}")
+    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
     public ResponseEntity<BrandResponse> getFromBrand(@PathVariable(name = "brId") Long brandId) {
         return ResponseEntity.ok(brandsHandler.getFromBrand(brandId));
     }
@@ -90,6 +95,7 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "404", description = "Brand not found")
     })
     @PutMapping("/")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Void> updateInBrand(@Valid @RequestBody BrandRequest brandRequest) {
         brandsHandler.updateInBrand(brandRequest);
         return ResponseEntity.noContent().build();
@@ -101,6 +107,7 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "404", description = "Brand not found")
     })
     @DeleteMapping("/{brandId}")
+    @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Void> deleteFromBrand(@PathVariable Long brandId) {
         brandsHandler.deleteFromBrand(brandId);
         return ResponseEntity.status(HttpStatus.OK).build();
