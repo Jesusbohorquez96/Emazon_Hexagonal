@@ -63,7 +63,7 @@ public class BrandsRestController {
                     .body(Collections.singletonMap("message", ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("message", ExceptionResponse.ALREADY_EXISTS.getMessage()));
+                    .body(Collections.singletonMap("message", ExceptionResponse.NOT_AUTHENTICATION.getMessage()));
         }
     }
 

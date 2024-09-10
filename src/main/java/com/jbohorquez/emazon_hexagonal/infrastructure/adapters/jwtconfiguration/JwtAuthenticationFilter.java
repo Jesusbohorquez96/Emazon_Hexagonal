@@ -1,6 +1,7 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.adapters.jwtconfiguration;
 
 
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
+        try {
         final String authHeader = request.getHeader(AUTHORIZATION);
         final String jwt;
         final String userName;
@@ -41,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jwt = authHeader.substring(SEVEN);
-        try {
+
             userName = jwtService.extractUsername(jwt);
 
             if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -63,15 +65,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
 
-
-        } catch (Exception e) {
-            System.err.println(ERROR_AUTHENTICATION + e);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, TOKEN_INVALID);
-            return;
-        }
-
-        filterChain.doFilter(request, response);
+             filterChain.doFilter(request, response);
+         } catch (MalformedJwtException e) {
+        response.setContentType(JSON);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.getOutputStream().println(ERROR_JWT);
+         }
     }
 }
-
 

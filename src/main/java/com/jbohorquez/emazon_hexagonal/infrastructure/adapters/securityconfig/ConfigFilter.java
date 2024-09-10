@@ -2,6 +2,7 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.adapters.securityconfig;
 
 
 import com.jbohorquez.emazon_hexagonal.infrastructure.adapters.jwtconfiguration.JwtAuthenticationFilter;
+import com.jbohorquez.emazon_hexagonal.infrastructure.adapters.jwtentrypoint.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,17 +24,21 @@ public class ConfigFilter {
     private final JwtAuthenticationFilter jwtAuthFilter;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) throws Exception {
 
         return http
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .antMatchers(V3_API).permitAll()
+                .antMatchers(AUTH).permitAll()
                 .antMatchers(SWAGGER_UI).permitAll()
                 .antMatchers(SWAGGER_UI_RESOURCES).permitAll()
-                .antMatchers(ALL)
-                .authenticated()
+                .antMatchers(ALL_API).authenticated()
                 .anyRequest().authenticated()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

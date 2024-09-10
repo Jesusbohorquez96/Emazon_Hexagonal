@@ -20,7 +20,6 @@ public class ValidationConstants {
     public static final String PRIVATE = "294A404E635266556A586E327235753878214125442A472D4B6150645367566B";
     public static final String SWAGGER_UI = "/swagger-ui.html";
     public static final String SWAGGER_UI_RESOURCES = "/swagger-ui/**";
-    public static final String ALL = "/**";
     public static final String ROL = "rol";
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER = "Bearer ";
@@ -28,6 +27,12 @@ public class ValidationConstants {
     public static final String TOKEN_INVALID = "Token invalid o expiration";
     public static final String ROLE =  "ROLE_";
 
+    public static final String V3_API = "/v3/api-docs/**";
+    public static final String AUTH = "/auth/**";
+    public static final String ALL_API = "/api/**";
+
+    public static final String JSON = "application/json";
+    public static final String ERROR_JWT = "{ \"error\": \"Access denied: Invalid or malformed JWT token\" }";
 
 
     private ValidationConstants() {

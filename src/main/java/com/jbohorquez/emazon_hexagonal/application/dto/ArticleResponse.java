@@ -16,5 +16,4 @@ public class ArticleResponse {
     private Double articlePrice;
     private Set<ArticleCategoryResponse> articleCategories;
     private ArticleBrandResponse articleBrand;
-
 }

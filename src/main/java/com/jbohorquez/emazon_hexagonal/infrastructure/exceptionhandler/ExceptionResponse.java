@@ -10,7 +10,8 @@ public enum ExceptionResponse {
     INTERNAL_ERROR("internal error"),
     NOT_EXISTS("Not exist"),
     SUCCESSFUL_CREATION("Successful creation"),
-    CHARACTER_LIMIT_EXCEEDED("Character limit exceeded"),;
+    CHARACTER_LIMIT_EXCEEDED("Character limit exceeded"),
+    NOT_AUTHENTICATION("Not authentication"),;
 
     private final String message;
 

@@ -42,7 +42,4 @@ public class ArticleRequest {
 
     @NotNull(message = "Brand ID is mandatory")
     private Long brand;
-
-
-
 }
