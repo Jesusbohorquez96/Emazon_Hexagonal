@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -30,48 +32,41 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader(AUTHORIZATION);
         final String jwt;
         final String userName;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith(BEARER)) {
             filterChain.doFilter(request, response);
             return;
         }
-        jwt = authHeader.substring(7);
+        jwt = authHeader.substring(SEVEN);
         try {
-            // Extraer el nombre de usuario del JWT
             userName = jwtService.extractUsername(jwt);
 
             if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                    // Extraer el rol del JWT
                     String extractRol = jwtService.extractRol(jwt);
 
-                    // Crear la autoridad basada en el rol extraído
                     List<GrantedAuthority> authorities = Collections.singletonList(
-                            new SimpleGrantedAuthority("ROLE_" + extractRol)
+                            new SimpleGrantedAuthority(ROLE + extractRol)
                     );
 
-                    // Crear el token de autenticación
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userName,
                             null,
                             authorities
                     );
 
-                    // Agregar detalles adicionales
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                    // Establecer el contexto de seguridad
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
 
 
         } catch (Exception e) {
-            // Manejar cualquier excepción relacionada con la extracción del JWT o autenticación
-            System.err.println("Error en la autenticación JWT: " + e);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido o expirado");
+            System.err.println(ERROR_AUTHENTICATION + e);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, TOKEN_INVALID);
             return;
         }
 

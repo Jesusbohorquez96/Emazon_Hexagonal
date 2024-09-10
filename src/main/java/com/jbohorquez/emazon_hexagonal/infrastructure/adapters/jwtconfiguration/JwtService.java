@@ -11,6 +11,7 @@ import java.security.Key;
 import java.util.function.Function;
 
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.PRIVATE;
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.ROL;
 
 @Service
 public class JwtService {
@@ -25,7 +26,7 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
     public String extractRol(String token) {
-        return extractClaim(token, claims -> claims.get("rol", String.class));
+        return extractClaim(token, claims -> claims.get(ROL, String.class));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
