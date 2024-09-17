@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,4 +77,14 @@ public class ArticlesHandler implements IArticlesHandler {
     public void deleteArticleFrom(Long articleId) {
         articleServicePort.deleteArticle(articleId);
     }
+
+    public void increaseStock(Long articleId, int additionalStock) {
+        Article article = articleServicePort.getArticleById(articleId);
+        if (article == null) {
+            throw new EntityNotFoundException("Article not found");
+        }
+        article.setStock(article.getStock() + additionalStock);
+        articleServicePort.updateArticle(article);
+    }
+
 }

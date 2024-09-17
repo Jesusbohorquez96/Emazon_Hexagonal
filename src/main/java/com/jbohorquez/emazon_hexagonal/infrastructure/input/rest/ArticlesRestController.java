@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +55,7 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
 
-    @PostMapping("/")
+    @PostMapping
     @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Map<String, String>> saveArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
         try {
@@ -94,11 +95,19 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "404", description = "Article not found")
     })
-    @PutMapping("/")
-    @PreAuthorize("hasAnyRole('admin')")
-    public ResponseEntity<Void> updateArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
-        articlesHandler.updateArticleIn(articleRequest);
-        return ResponseEntity.noContent().build();
+    @PutMapping("/increase-stock/{articleId}")
+    @PreAuthorize("hasAnyRole('admin', 'aux_bodega')")
+    public ResponseEntity<Map<String, String>> increaseStock(
+            @PathVariable Long articleId,
+            @RequestParam(value = "additionalStock", required = false, defaultValue = "0") int additionalStock) {
+        try {
+            articlesHandler.increaseStock(articleId, additionalStock);
+            return ResponseEntity.ok(Collections.singletonMap("message", "Stock updated successfully"));
+        } catch (EntityNotFoundException e) {
+            System.out.println("hola mundo" + e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "Article not found"));
+        }
     }
 
     @Operation(summary = "Delete an article", description = "Deletes an existing article based on its ID.")

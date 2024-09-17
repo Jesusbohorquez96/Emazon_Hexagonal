@@ -1,6 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.infrastructure.adapters.securityconfig;
 
-
 import com.jbohorquez.emazon_hexagonal.infrastructure.adapters.jwtconfiguration.JwtAuthenticationFilter;
 import com.jbohorquez.emazon_hexagonal.infrastructure.adapters.jwtentrypoint.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;

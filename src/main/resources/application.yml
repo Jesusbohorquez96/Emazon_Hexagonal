@@ -18,14 +18,11 @@ spring:
       ddl-auto: update
     show-sql: true
 
-
-
   data:
     mongodb:
       host: localhost
       port: 27017
       database: emazon_hexagonal
-
 
 appdescription: "Descripción de mi aplicación"
 appversion: "1.0.0"
