@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
 public  class CategoryUseCase implements ICategoryServicePort {
 
     private final ICategoryPersistencePort categoryPersistencePort;
@@ -45,14 +47,14 @@ public  class CategoryUseCase implements ICategoryServicePort {
 
     @Override
     public Page<Category> getCategories(int page, int size, boolean ascending) {
-        String sortDirection = ascending ? "asc" : "desc";
+        String sortDirection = ascending ? ASC : DESC;
         return getCategories(page, size, sortDirection);
     }
 
     @Override
     public Page<Category> getCategories(int pageNumber, int pageSize, String sortDirection) {
-        Sort sort = Sort.by("name");
-        if ("desc".equalsIgnoreCase(sortDirection)) {
+        Sort sort = Sort.by(NAME);
+        if (DESC.equalsIgnoreCase(sortDirection)) {
             sort = sort.descending();
         } else {
             sort = sort.ascending();

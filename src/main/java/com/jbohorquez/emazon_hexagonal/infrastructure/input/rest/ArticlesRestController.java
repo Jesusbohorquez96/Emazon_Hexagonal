@@ -104,7 +104,6 @@ public class ArticlesRestController {
             articlesHandler.increaseStock(articleId, additionalStock);
             return ResponseEntity.ok(Collections.singletonMap("message", "Stock updated successfully"));
         } catch (EntityNotFoundException e) {
-            System.out.println("hola mundo" + e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "Article not found"));
         }

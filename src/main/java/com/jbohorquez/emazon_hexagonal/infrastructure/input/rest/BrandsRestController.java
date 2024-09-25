@@ -43,7 +43,6 @@ public class BrandsRestController {
             @RequestParam(defaultValue = ASC) String sortDirection
     ) {
         Page<BrandResponse> brands = brandsHandler.getBrands(page, size, sortDirection);
-        System.out.println("Brands: " + brands);
         return ResponseEntity.ok(brands);
     }
 
@@ -56,7 +55,6 @@ public class BrandsRestController {
     @PostMapping("/")
     @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Map<String, String>> saveInBrand(@Valid @RequestBody BrandRequest brandRequest) {
-        System.out.println("BrandRequest: " + brandRequest);
         try {
             brandsHandler.saveInBrand(brandRequest);
             return ResponseEntity.status(HttpStatus.CREATED)

@@ -34,43 +34,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         try {
-        final String authHeader = request.getHeader(AUTHORIZATION);
-        final String jwt;
-        final String userName;
+            final String authHeader = request.getHeader(AUTHORIZATION);
+            final String jwt;
+            final String userName;
+            if (authHeader == null || !authHeader.startsWith(BEARER)) {
+                filterChain.doFilter(request, response);
+                return;
 
-        if (authHeader == null || !authHeader.startsWith(BEARER)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        jwt = authHeader.substring(SEVEN);
-
+            }
+            jwt = authHeader.substring(SEVEN);
             userName = jwtService.extractUsername(jwt);
 
             if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                String extractRol = jwtService.extractRol(jwt);
+                List<GrantedAuthority> authorities = Collections.singletonList(
 
-                    String extractRol = jwtService.extractRol(jwt);
-
-                    List<GrantedAuthority> authorities = Collections.singletonList(
-                            new SimpleGrantedAuthority(ROLE + extractRol)
-                    );
-
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userName,
-                            null,
-                            authorities
-                    );
-
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
-
-             filterChain.doFilter(request, response);
-         } catch (MalformedJwtException e) {
-        response.setContentType(JSON);
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        response.getOutputStream().println(ERROR_JWT);
-         }
+                        new SimpleGrantedAuthority(ROLE + extractRol)
+                );
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userName,
+                        null,
+                        authorities
+                );
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+            filterChain.doFilter(request, response);
+        } catch (MalformedJwtException e) {
+            response.setContentType(JSON);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getOutputStream().println(ERROR_JWT);
+        }
     }
 }
 

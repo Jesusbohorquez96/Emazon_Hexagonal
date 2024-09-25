@@ -56,7 +56,6 @@ public class CategoriesRestController {
     @PostMapping("/")
     @PreAuthorize("hasAnyRole('admin')")
     public ResponseEntity<Map<String, String>> saveInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
-        System.out.println("CategoryRequest: " + categoryRequest);
         try {
             categoriesHandler.saveInCategory(categoryRequest);
             return ResponseEntity.status(HttpStatus.CREATED)

@@ -24,15 +24,12 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
 
     @Override
     public void saveCategory(Category category) {
-        //validate that a brand with the same name does not exist
         if (categoryRepository.findByName(category.getName()).isPresent()) {
             throw new AlreadyExistsException();
         }
-        //validate your name is shorter than NAME_MAX_LENGTH characters
         if (category.getName().length() > NAME_MAX_LENGTH) {
             throw new NameTooLongException("Name is too long");
         }
-        //validate if the description is shorter than DESCRIPTION MAX_LENGTH characters
         if (category.getDescription() == null || category.getDescription().length() > DESCRIPTION_MAX_LENGTH) {
             throw new DescriptionTooLongException("Description is too long");
         }
