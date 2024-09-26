@@ -13,8 +13,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_MAX_LENGTH;
-import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME_MAX_LENGTH;
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
 @RequiredArgsConstructor
 public class CategoryJpaAdapter implements ICategoryPersistencePort {
@@ -24,14 +23,14 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
 
     @Override
     public void saveCategory(Category category) {
+        if (category.getName().length() > NAME_MAX_LENGTH) {
+            throw new NameTooLongException(NAME_TOO_LONG);
+        }
         if (categoryRepository.findByName(category.getName()).isPresent()) {
             throw new AlreadyExistsException();
         }
-        if (category.getName().length() > NAME_MAX_LENGTH) {
-            throw new NameTooLongException("Name is too long");
-        }
         if (category.getDescription() == null || category.getDescription().length() > DESCRIPTION_MAX_LENGTH) {
-            throw new DescriptionTooLongException("Description is too long");
+            throw new DescriptionTooLongException(DESCRIPTION_TOO_LONG);
         }
         categoryRepository.save(categoryEntityMapper.toEntity(category));
     }

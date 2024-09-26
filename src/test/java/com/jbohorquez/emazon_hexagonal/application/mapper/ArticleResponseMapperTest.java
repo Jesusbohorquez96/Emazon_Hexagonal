@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,68 +20,114 @@ class ArticleResponseMapperTest {
     private ArticleResponseMapper articleResponseMapper;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         articleResponseMapper = Mappers.getMapper(ArticleResponseMapper.class);
     }
 
     @Test
-    void toResponseList_ShouldMapArticleToArticleResponse() {
+    public void testMapCategoriesToResponsesWithValidSet() {
+        // Arrange
+        Category category = new Category();
+        category.setId(1L);
+        category.setName("Test Category");
+
+        Set<Category> categories = Collections.singleton(category);
+
+        // Act
+        Set<ArticleCategoryResponse> responses = articleResponseMapper.mapCategoriesToResponses(categories);
+
+        // Assert
+        assertNotNull(responses);
+        assertEquals(1, responses.size());
+        ArticleCategoryResponse response = responses.iterator().next();
+        assertEquals(category.getId(), response.getCategoryId());
+        assertEquals(category.getName(), response.getCategoryName());
+    }
+
+    @Test
+    public void testMapBrandToResponse() {
         // Arrange
         Brand brand = new Brand();
         brand.setId(1L);
-        brand.setName("BrandName");
+        brand.setName("Test Brand");
+
+        // Act
+        ArticleBrandResponse response = articleResponseMapper.map(brand);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(brand.getId(), response.getBrandId());
+        assertEquals(brand.getName(), response.getBrandName());
+    }
+
+    @Test
+    public void testMapNullBrand() {
+        // Act
+        ArticleBrandResponse response = articleResponseMapper.map(null);
+
+        // Assert
+        assertNull(response);
+    }
+
+    @Test
+    public void testToBrandResponseListWithNullArticle() {
+        // Act
+        ArticleBrandResponse response = articleResponseMapper.toBrandResponseList(null);
+
+        // Assert
+        assertNull(response);
+    }
+
+    @Test
+    public void testToResponseListWithValidArticle() {
+        // Arrange
+        Brand brand = new Brand();
+        brand.setId(1L);
+        brand.setName("Test Brand");
 
         Category category = new Category();
         category.setId(1L);
-        category.setName("CategoryName");
-
-        Set<Category> categories = new HashSet<>();
-        categories.add(category);
+        category.setName("Test Category");
 
         Article article = new Article();
         article.setId(1L);
-        article.setName("ArticleName");
-        article.setDescription("ArticleDescription");
-        article.setStock(10);
-        article.setPrice(99.99);
+        article.setName("Test Article");
+        article.setDescription("Test Description");
+        article.setStock(100);
+        article.setPrice(50.0);
         article.setBrand(brand);
-        article.setCategories(categories);
+        article.setCategories(Collections.singleton(category));
 
         // Act
-        ArticleResponse articleResponse = articleResponseMapper.toResponseList(article);
+        ArticleResponse response = articleResponseMapper.toResponseList(article);
 
         // Assert
-        assertNotNull(articleResponse);
-        assertEquals(article.getId(), articleResponse.getArticleId());
-        assertEquals(article.getName(), articleResponse.getArticleName());
-        assertEquals(article.getDescription(), articleResponse.getArticleDescription());
-        assertEquals(article.getStock(), articleResponse.getArticleStock());
-        assertEquals(article.getPrice(), articleResponse.getArticlePrice());
+        assertNotNull(response);
+        assertEquals(article.getId(), response.getArticleId());
+        assertEquals(article.getName(), response.getArticleName());
+        assertEquals(article.getDescription(), response.getArticleDescription());
+        assertEquals(article.getStock(), response.getArticleStock());
+        assertEquals(article.getPrice(), response.getArticlePrice());
 
-        assertNotNull(articleResponse.getArticleBrand());
-        assertEquals(brand.getId(), articleResponse.getArticleBrand().getBrandId());
-        assertEquals(brand.getName(), articleResponse.getArticleBrand().getBrandName());
+        // Verificar la marca
+        assertNotNull(response.getArticleBrand());
+        assertEquals(brand.getId(), response.getArticleBrand().getBrandId());
+        assertEquals(brand.getName(), response.getArticleBrand().getBrandName());
 
-        assertNotNull(articleResponse.getArticleCategories());
-        assertEquals(1, articleResponse.getArticleCategories().size());
-
-        ArticleCategoryResponse categoryResponse = articleResponse.getArticleCategories().iterator().next();
+        // Verificar las categorías
+        assertNotNull(response.getArticleCategories());
+        assertEquals(1, response.getArticleCategories().size());
+        ArticleCategoryResponse categoryResponse = response.getArticleCategories().iterator().next();
         assertEquals(category.getId(), categoryResponse.getCategoryId());
         assertEquals(category.getName(), categoryResponse.getCategoryName());
     }
 
     @Test
-    void mapBrandToArticleBrandResponse() {
+    public void testToResponseListWithNullArticle() {
+        // Act
+        ArticleResponse response = articleResponseMapper.toResponseList(null);
 
-        Brand brand = new Brand();
-        brand.setId(1L);
-        brand.setName("BrandName");
-
-
-        ArticleBrandResponse brandResponse = articleResponseMapper.map(brand);
-
-        assertNotNull(brandResponse, "El resultado del mapeo no debería ser null");
-        assertNotNull(brandResponse.getBrandId(), "El ID de la marca mapeada no debería ser null");
-        assertNotNull(brandResponse.getBrandName(), "El nombre de la marca mapeada no debería ser null");
+        // Assert
+        assertNull(response);
     }
 }

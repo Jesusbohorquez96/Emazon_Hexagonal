@@ -6,14 +6,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring",
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
+@Mapper(componentModel = SPRING,
         unmappedSourcePolicy = ReportingPolicy.IGNORE,
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         uses = {Brand.class})
 public interface BrandResponseMapper {
 
-    @Mapping(target = "brandId", source = "id")
-    @Mapping(target = "brandName", source = "name")
-    @Mapping(target = "brandDescription", source = "description")
+    @Mapping(target = BRAND_ID, source = ID)
+    @Mapping(target = BRAND_NAME, source = NAME)
+    @Mapping(target = BRAND_DESCRIPTION, source = DESCRIPTION)
     BrandResponse toBrResponseList(Brand Brand);
 }

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
 @Configuration
 public class OpenApiConfiguration {
 
@@ -17,10 +19,10 @@ public class OpenApiConfiguration {
         return new OpenAPI()
                 .components(new Components())
                 .info(new Info()
-                        .title("Hexagonal Monolithic Category API")
+                        .title(TITLE)
                         .version(appVersion)
                         .description(appDescription)
-                        .termsOfService("http://swagger.io/terms/")
-                        .license(new License().name("Apache 2.0").url("http://springdoc.org")));
+                        .termsOfService(SWAGGER_TERMS)
+                        .license(new License().name(SWAGGER_LICENSE).url(SWAGGER_LICENSE_URL)));
     }
 }

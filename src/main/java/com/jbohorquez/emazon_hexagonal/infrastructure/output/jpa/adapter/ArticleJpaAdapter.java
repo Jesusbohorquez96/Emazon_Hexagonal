@@ -27,22 +27,22 @@ public class ArticleJpaAdapter implements IArticlePersistencePort {
     @Override
     public void saveArticle(Article article) {
         if (article.getCategories().size() > ASSOCIATED) {
-            throw new IllegalArgumentException("Article can have 1 to 3 categories");
-        }
-        if (article.getCategories().isEmpty()) {
-            throw new IllegalArgumentException("Article must have at least one category");
-        }
-        if (article.getCategories().stream().distinct().count() != article.getCategories().size()) {
-            throw new IllegalArgumentException("Categories must be different");
+            throw new IllegalArgumentException(ARTICLE_CATEGORIES_LIMIT);
         }
         if (articleRepository.findByName(article.getName()).isPresent()) {
             throw new AlreadyExistsException();
         }
+        if (article.getCategories().isEmpty()) {
+            throw new IllegalArgumentException(ARTICLE_MINIMUM_ONE_CATEGORY);
+        }
         if (article.getName().length() > NAME_MAX_LENGTH) {
-            throw new NameTooLongException("Name is too long");
+            throw new NameTooLongException(NAME_TOO_LONG);
+        }
+        if (article.getCategories().stream().distinct().count() != article.getCategories().size()) {
+            throw new IllegalArgumentException(CATEGORIES_MUST_BE_DIFFERENT);
         }
         if (article.getDescription() == null || article.getDescription().length() > DESCRIPTION_MAX_LENGTH) {
-            throw new DescriptionTooLongException("Description is too long");
+            throw new DescriptionTooLongException(DESCRIPTION_TOO_LONG);
         }
         articleRepository.save(articleEntityMapper.toEntity(article));
     }

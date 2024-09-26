@@ -15,6 +15,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -48,7 +50,7 @@ public class ArticlesHandler implements IArticlesHandler {
 
     @Override
     public Page<ArticleResponse> getArticle(int page, int size, String sortBy, String sortDirection) {
-        boolean ascending = "asc".equalsIgnoreCase(sortDirection);
+        boolean ascending = ASC.equalsIgnoreCase(sortDirection);
         return articleServicePort.getArticles(page, size, sortBy, ascending)
                 .map(articleResponseMapper::toResponseList);
     }
@@ -81,7 +83,7 @@ public class ArticlesHandler implements IArticlesHandler {
     public void increaseStock(Long articleId, int additionalStock) {
         Article article = articleServicePort.getArticleById(articleId);
         if (article == null) {
-            throw new EntityNotFoundException("Article not found");
+            throw new EntityNotFoundException(ARTICLE_NOT_FOUND);
         }
         article.setStock(article.getStock() + additionalStock);
         articleServicePort.updateArticle(article);

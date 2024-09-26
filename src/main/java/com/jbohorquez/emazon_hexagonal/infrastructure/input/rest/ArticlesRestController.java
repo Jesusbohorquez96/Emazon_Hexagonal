@@ -25,9 +25,9 @@ import java.util.Map;
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
 @RestController
-@RequestMapping("/articles")
+@RequestMapping(GET_ARTICLE)
 @RequiredArgsConstructor
-@Tag(name = "Articles", description = "Article management")
+@Tag(name = ARTICLE, description = ARTICLE_MANAGEMENT)
 public class ArticlesRestController {
 
     private final ArticlesHandler articlesHandler;
@@ -38,7 +38,7 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
-    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
+    @PreAuthorize(TODO_ROL)
     public ResponseEntity<Page<ArticleResponse>> getArticles(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size,
@@ -56,15 +56,15 @@ public class ArticlesRestController {
     })
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('admin')")
+    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Map<String, String>> saveArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
         try {
             articlesHandler.saveArticleIn(articleRequest);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(Collections.singletonMap("message", ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
+                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(Collections.singletonMap("message", ExceptionResponse.ALREADY_EXISTS.getMessage()));
+                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.ALREADY_EXISTS.getMessage()));
         }
     }
 
@@ -72,8 +72,8 @@ public class ArticlesRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of articles returned successfully")
     })
-    @GetMapping("/")
-    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
+    @GetMapping(ROOT)
+    @PreAuthorize(TODO_ROL)
     public ResponseEntity<List<ArticleResponse>> getArticleFrom() {
         return ResponseEntity.ok(articlesHandler.getArticleFrom());
     }
@@ -83,9 +83,9 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "200", description = "Article returned successfully"),
             @ApiResponse(responseCode = "404", description = "Article not found")
     })
-    @GetMapping("/{brId}")
-    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
-    public ResponseEntity<ArticleResponse> getArticleFrom(@PathVariable(name = "brId") Long articleId) {
+    @GetMapping(GET_BR_ID)
+    @PreAuthorize(TODO_ROL)
+    public ResponseEntity<ArticleResponse> getArticleFrom(@PathVariable(name = BR_ID) Long articleId) {
         return ResponseEntity.ok(articlesHandler.getArticleFrom(articleId));
     }
 
@@ -95,17 +95,17 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "404", description = "Article not found")
     })
-    @PutMapping("/increase-stock/{articleId}")
-    @PreAuthorize("hasAnyRole('admin', 'aux_bodega')")
+    @PutMapping(INCREASE_STOCK_ARTICLE_ID)
+    @PreAuthorize(ROL_ADMIN_AUX)
     public ResponseEntity<Map<String, String>> increaseStock(
             @PathVariable Long articleId,
-            @RequestParam(value = "additionalStock", required = false, defaultValue = "0") int additionalStock) {
+            @RequestParam(value = ADDITIONAL_STOCK, required = false, defaultValue = PAGE) int additionalStock) {
         try {
             articlesHandler.increaseStock(articleId, additionalStock);
-            return ResponseEntity.ok(Collections.singletonMap("message", "Stock updated successfully"));
+            return ResponseEntity.ok(Collections.singletonMap(MESSAGE, STOCK_UPDATED));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Collections.singletonMap("error", "Article not found"));
+                    .body(Collections.singletonMap(ERROR, ARTICLE_NOT_FOUND));
         }
     }
 
@@ -114,8 +114,8 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "204", description = "Article successfully deleted"),
             @ApiResponse(responseCode = "404", description = "Article not found")
     })
-    @DeleteMapping("/{articleId}")
-    @PreAuthorize("hasAnyRole('admin')")
+    @DeleteMapping(DELETE_ARTICLE_ID)
+    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Void> deleteArticleFrom(@PathVariable Long articleId) {
         articlesHandler.deleteArticleFrom(articleId);
         return ResponseEntity.ok().build();

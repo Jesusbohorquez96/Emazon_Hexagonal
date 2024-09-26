@@ -2,7 +2,6 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler;
 
 import com.jbohorquez.emazon_hexagonal.error.ErrorResponse;
 import io.jsonwebtoken.MalformedJwtException;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
 @ControllerAdvice
 public class ControllerAdvisor {
-
-    private static final String MESSAGE = "message";
-    private static final Logger logger = LoggerFactory.getLogger(ControllerAdvisor.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -35,8 +33,8 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(MalformedJwtException.class)
     public ResponseEntity<ErrorResponse> handleMalformedJwtException(MalformedJwtException ex) {
-        logger.error("Malformed JWT Exception: ", ex);
-        ErrorResponse errorResponse = new ErrorResponse("JWT Token", "Invalid or malformed JWT token");
+        LoggerFactory.getLogger(ControllerAdvisor.class).error(MALFORMED_JWT, ex);
+        ErrorResponse errorResponse = new ErrorResponse(JWT_TOKEN, INVALID_JWT);
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 }

@@ -13,19 +13,21 @@ import org.mapstruct.ReportingPolicy;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring",
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
+@Mapper(componentModel = SPRING,
         unmappedSourcePolicy = ReportingPolicy.IGNORE,
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         uses = {Article.class})
 public interface ArticleResponseMapper {
 
-    @Mapping(target = "articleId", source = "id")
-    @Mapping(target = "articleName", source = "name")
-    @Mapping(target = "articleDescription", source = "description")
-    @Mapping(target = "articleStock", source = "stock")
-    @Mapping(target = "articlePrice", source = "price")
-    @Mapping(target = "articleBrand", source = "brand")
-    @Mapping(target = "articleCategories", source = "categories")
+    @Mapping(target = ARTICLE_ID, source = ID)
+    @Mapping(target = ARTICLE_NAME, source = NAME)
+    @Mapping(target = ARTICLE_DESCRIPTION, source = DESCRIPTION)
+    @Mapping(target = ARTICLE_STOCK, source = STOCK)
+    @Mapping(target = ARTICLE_PRICE, source = PRICE)
+    @Mapping(target = ARTICLE_BRAND, source = BRAND)
+    @Mapping(target = ARTICLE_CATEGORIES, source = CATEGORIES)
     ArticleResponse toResponseList(Article article);
 
     default Set<ArticleCategoryResponse> mapCategoriesToResponses(Set<Category> categories) {

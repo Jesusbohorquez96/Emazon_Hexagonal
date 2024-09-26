@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
 @Configuration
 @RequiredArgsConstructor
 public class BeanConfigurationArticle {
@@ -32,7 +34,7 @@ public class BeanConfigurationArticle {
         return new ArticleUseCase(articlePersistencePort()) {
             @Override
             public Page<Article> getArticles(int page, int size, boolean ascending) {
-                PageRequest pageRequest = PageRequest.of(page, size, ascending ? Sort.Direction.ASC : Sort.Direction.DESC, "name");
+                PageRequest pageRequest = PageRequest.of(page, size, ascending ? Sort.Direction.ASC : Sort.Direction.DESC, NAME);
                 Page<Article> articles = articlePersistencePort().getArticles(pageRequest);
 
                 if (articles == null || articles.isEmpty()) {

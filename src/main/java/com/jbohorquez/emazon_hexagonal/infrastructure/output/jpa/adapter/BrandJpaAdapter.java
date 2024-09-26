@@ -13,8 +13,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_BRAND_MAX_LENGTH;
-import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME_MAX_LENGTH;
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
 @RequiredArgsConstructor
 public class BrandJpaAdapter implements BrandPersistencePort {
@@ -29,10 +28,10 @@ public class BrandJpaAdapter implements BrandPersistencePort {
             throw new AlreadyExistsException();
         }
         if (brand.getName().length() > NAME_MAX_LENGTH) {
-            throw new NameTooLongException("Name is too long");
+            throw new NameTooLongException(NAME_TOO_LONG);
         }
         if (brand.getDescription() == null || brand.getDescription().length() > DESCRIPTION_BRAND_MAX_LENGTH) {
-            throw new DescriptionTooLongException("Description is too long");
+            throw new DescriptionTooLongException(DESCRIPTION_TOO_LONG);
         }
         brandRepository.save(brandEntityMapper.toEntity(brand));
     }

@@ -24,9 +24,9 @@ import java.util.Map;
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping(GET_CATEGORIES)
 @RequiredArgsConstructor
-@Tag(name = "Categories", description = "API for category management")
+@Tag(name = CATEGORIES, description = CATEGORIES_API)
 public class CategoriesRestController {
 
     private final ICategoriesHandler categoriesHandler;
@@ -37,7 +37,7 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
-    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
+    @PreAuthorize(TODO_ROL)
     public ResponseEntity<Page<CategoryResponse>> getCategories(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size,
@@ -53,19 +53,19 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
 
-    @PostMapping("/")
-    @PreAuthorize("hasAnyRole('admin')")
+    @PostMapping(ROOT)
+    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Map<String, String>> saveInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         try {
             categoriesHandler.saveInCategory(categoryRequest);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(Collections.singletonMap("message", ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
+                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
         } catch (AllExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(Collections.singletonMap("message", ExceptionResponse.INTERNAL_ERROR.getMessage()));
+                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INTERNAL_ERROR.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("message", ExceptionResponse.ALREADY_EXISTS.getMessage()));
+                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.ALREADY_EXISTS.getMessage()));
         }
     }
 
@@ -73,8 +73,8 @@ public class CategoriesRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Category list returned successfully")
     })
-    @GetMapping("/")
-    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
+    @GetMapping(ROOT)
+    @PreAuthorize(TODO_ROL)
     public ResponseEntity<List<CategoryResponse>> getFromCategory() {
         return ResponseEntity.ok(categoriesHandler.getFromCategory());
     }
@@ -84,9 +84,9 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "200", description = "Category returned successfully"),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
-    public ResponseEntity<CategoryResponse> getFromCategory(@PathVariable(name = "id") Long categoryId) {
+    @GetMapping(GET_ID)
+    @PreAuthorize(TODO_ROL)
+    public ResponseEntity<CategoryResponse> getFromCategory(@PathVariable(name = ID) Long categoryId) {
         return ResponseEntity.ok(categoriesHandler.getFromCategory(categoryId));
     }
 
@@ -96,8 +96,8 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
-    @PutMapping("/")
-    @PreAuthorize("hasAnyRole('admin')")
+    @PutMapping(ROOT)
+    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Void> updateInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         categoriesHandler.updateInCategory(categoryRequest);
         return ResponseEntity.noContent().build();
@@ -108,8 +108,8 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "200", description = "Category successfully deleted"),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
-    @DeleteMapping("/{categoryId}")
-    @PreAuthorize("hasAnyRole('admin')")
+    @DeleteMapping(GET_CATEGORY_ID)
+    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Void> deleteFromCategory(@PathVariable Long categoryId) {
         categoriesHandler.deleteFromCategory(categoryId);
         return ResponseEntity.status(HttpStatus.OK).build();

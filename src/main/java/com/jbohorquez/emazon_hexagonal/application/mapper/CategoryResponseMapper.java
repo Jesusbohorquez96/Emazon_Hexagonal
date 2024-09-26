@@ -6,14 +6,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring",
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
+
+@Mapper(componentModel = SPRING,
         unmappedSourcePolicy = ReportingPolicy.IGNORE,
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         uses = {Category.class})
 public interface CategoryResponseMapper {
 
-    @Mapping(target = "categoryId", source = "id")
-    @Mapping(target = "categoryName", source = "name")
-    @Mapping(target = "categoryDescription", source = "description")
+    @Mapping(target = CATEGORY_ID, source = ID)
+    @Mapping(target = CATEGORY_NAME, source = NAME)
+    @Mapping(target = CATEGORY_DESCRIPTION, source = DESCRIPTION)
     CategoryResponse toResponseList(Category category);
 }

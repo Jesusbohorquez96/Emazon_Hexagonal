@@ -17,29 +17,29 @@ import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 public class ArticleRequest {
 
     @Column(length= NAME_MAX_LENGTH, nullable = false)
-    @NotBlank(message = "Article name is mandatory")
+    @NotBlank(message = ARTICLE_NAME_MANDATORY)
     @Size(max = NAME_MAX_LENGTH)
     private String name;
 
-    @Column(name = "description", nullable = false, length = DESCRIPTION_BRAND_MAX_LENGTH)
-    @NotBlank(message = "Article description is mandatory")
+    @Column(name = DESCRIPTION, nullable = false, length = DESCRIPTION_BRAND_MAX_LENGTH)
+    @NotBlank(message = ARTICLE_DESCRIPTION_MANDATORY)
     @Size(max = DESCRIPTION_BRAND_MAX_LENGTH)
     private String description;
 
     @Column(nullable = false)
-    @NotNull(message = "Stock is mandatory")
-    @Min(value = ZERO, message = "Stock cannot be negative")
+    @NotNull(message = STOCK_MANDATORY)
+    @Min(value = ZERO, message = STOCK_NEGATIVE)
     private Integer stock;
 
     @Column(nullable = false)
-    @NotNull(message = "Price is mandatory")
-    @Min(value = ZERO, message = "Price cannot be negative")
-    @Digits(integer = INTEGERS, fraction = DECIMALS, message = "Price format is invalid")
+    @NotNull(message = PRICE_MANDATORY)
+    @Min(value = ZERO, message = PRICE_NEGATIVE)
+    @Digits(integer = INTEGERS, fraction = DECIMALS, message = PRICE_INVALID)
     private Double price;
 
-    @NotEmpty(message = "At least one category is required")
+    @NotEmpty(message = CATEGORY_REQUIRED)
     private Set<Long> categories;
 
-    @NotNull(message = "Brand ID is mandatory")
+    @NotNull(message = BRAND_ID_MANDATORY)
     private Long brand;
 }

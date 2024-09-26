@@ -14,12 +14,12 @@ import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 @Setter
 public class BrandRequest {
 
-    @NotBlank(message = "Name cannot be blank")
-    @Size(max = NAME_MAX_LENGTH, message = "The name must not exceed " + NAME_MAX_LENGTH + " characters")
+    @NotBlank(message = NAME_BLANK)
+    @Size(max = NAME_MAX_LENGTH, message = NAME_REQUIRED)
     private String name;
 
-    @NotBlank(message = "Description cannot be blank")
-    @Size(max = DESCRIPTION_BRAND_MAX_LENGTH, message = "The description must not exceed " + DESCRIPTION_BRAND_MAX_LENGTH + " characters")
+    @NotBlank(message = DESCRIPTION_BLANK)
+    @Size(max = DESCRIPTION_BRAND_MAX_LENGTH, message = DESCRIPTION_BRAND_REQUIRED)
     private String description;
 
     public BrandRequest(String name, String description) {

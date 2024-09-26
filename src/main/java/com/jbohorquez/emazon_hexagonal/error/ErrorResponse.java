@@ -14,4 +14,8 @@ public class ErrorResponse {
         this.field = field;
         this.error = error;
     }
+
+    public String getMessage() {
+        return null;
+    }
 }

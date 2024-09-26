@@ -23,9 +23,9 @@ import java.util.Map;
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
 @RestController
-@RequestMapping("/brands")
+@RequestMapping(GET_BRAND)
 @RequiredArgsConstructor
-@Tag(name = "Brand", description = "Brand management")
+@Tag(name = BRAND, description = BRAND_MANAGEMENT)
 public class BrandsRestController {
 
     private final BrandsHandler brandsHandler;
@@ -36,7 +36,7 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
-    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
+    @PreAuthorize(TODO_ROL)
     public ResponseEntity<Page<BrandResponse>> getBrands(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size,
@@ -52,16 +52,16 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
 
-    @PostMapping("/")
-    @PreAuthorize("hasAnyRole('admin')")
+    @PostMapping(ROOT)
+    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Map<String, String>> saveInBrand(@Valid @RequestBody BrandRequest brandRequest) {
         try {
             brandsHandler.saveInBrand(brandRequest);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(Collections.singletonMap("message", ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
+                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("message", ExceptionResponse.NOT_AUTHENTICATION.getMessage()));
+                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NOT_AUTHENTICATION.getMessage()));
         }
     }
 
@@ -69,8 +69,8 @@ public class BrandsRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of brands returned successfully")
     })
-    @GetMapping("/")
-    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
+    @GetMapping(ROOT)
+    @PreAuthorize(TODO_ROL)
     public ResponseEntity<List<BrandResponse>> getFromBrand() {
         return ResponseEntity.ok(brandsHandler.getFromBrand());
     }
@@ -80,9 +80,9 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "200", description = "Brand successfully returned"),
             @ApiResponse(responseCode = "404", description = "Brand not found")
     })
-    @GetMapping("/{brId}")
-    @PreAuthorize("hasAnyRole('admin', 'aux_bodega', 'customer')")
-    public ResponseEntity<BrandResponse> getFromBrand(@PathVariable(name = "brId") Long brandId) {
+    @GetMapping(GET_BR_ID)
+    @PreAuthorize(TODO_ROL)
+    public ResponseEntity<BrandResponse> getFromBrand(@PathVariable(name = BR_ID) Long brandId) {
         return ResponseEntity.ok(brandsHandler.getFromBrand(brandId));
     }
 
@@ -92,8 +92,8 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "404", description = "Brand not found")
     })
-    @PutMapping("/")
-    @PreAuthorize("hasAnyRole('admin')")
+    @PutMapping(ROOT)
+    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Void> updateInBrand(@Valid @RequestBody BrandRequest brandRequest) {
         brandsHandler.updateInBrand(brandRequest);
         return ResponseEntity.noContent().build();
@@ -104,8 +104,8 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "204", description = "Brand successfully removed"),
             @ApiResponse(responseCode = "404", description = "Brand not found")
     })
-    @DeleteMapping("/{brandId}")
-    @PreAuthorize("hasAnyRole('admin')")
+    @DeleteMapping(GET_BRAND_ID)
+    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Void> deleteFromBrand(@PathVariable Long brandId) {
         brandsHandler.deleteFromBrand(brandId);
         return ResponseEntity.status(HttpStatus.OK).build();

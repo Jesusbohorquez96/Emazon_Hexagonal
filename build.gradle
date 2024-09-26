@@ -10,6 +10,16 @@ group = 'com.jbohorquez'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+jacocoTestReport {
+	dependsOn test
+	reports {
+		html.enabled = true
+		xml.enabled = true
+		csv.enabled = false
+	}
+	finalizedBy jacocoTestCoverageVerification
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -18,7 +28,6 @@ configurations {
 
 repositories {
 	mavenCentral()
-//	jcenter()
 }
 
 dependencies {
@@ -29,7 +38,6 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'mysql:mysql-connector-java:8.0.33'
-//	implementation 'org.springframework.boot:spring-boot-devtools'
 
 	implementation "org.springframework.security:spring-security-crypto"
 
@@ -45,8 +53,13 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2', 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.12.0'
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.2'
+
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
+
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
 	testImplementation "org.springframework.security:spring-security-test"
 }
 
@@ -55,5 +68,6 @@ tasks.named('test') {
 }
 
 test {
+	useJUnitPlatform()
 	finalizedBy jacocoTestReport
 }

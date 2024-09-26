@@ -11,11 +11,10 @@ import javax.validation.constraints.Size;
 
 import java.util.List;
 
-import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.DESCRIPTION_BRAND_MAX_LENGTH;
-import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.NAME_MAX_LENGTH;
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
 @Entity
-@Table(name = "brand")
+@Table(name = BRAND)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -29,11 +28,11 @@ public class BrandEntity {
     @Column(length= NAME_MAX_LENGTH, nullable = false)
     private String name;
 
-    @Column(name = "description", nullable = false, length = DESCRIPTION_BRAND_MAX_LENGTH)
-    @NotBlank(message = "Brand description is mandatory")
-    @Size(max = DESCRIPTION_BRAND_MAX_LENGTH, message = "Brand description cannot be more than DESCRIPTION_BRAND_MAX_LENGTH characters")
+    @Column(name = DESCRIPTION, nullable = false, length = DESCRIPTION_BRAND_MAX_LENGTH)
+    @NotBlank(message = BRAND_DESCRIPTION_IS_MANDATORY)
+    @Size(max = DESCRIPTION_BRAND_MAX_LENGTH, message = BRAND_DESCRIPTION_TOO_LONG)
     private String description;
 
-    @OneToMany(mappedBy = "brand")
+    @OneToMany(mappedBy = BRAND)
     private List<ArticleEntity> articles;
 }

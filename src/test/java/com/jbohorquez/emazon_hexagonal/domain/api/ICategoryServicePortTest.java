@@ -79,7 +79,7 @@ class ICategoryServicePortTest {
         when(categoryPersistencePort.findAll(pageRequest)).thenReturn(categoryPage);
         Page<Category> result = categoryUseCase.getCategories(0, 10, true);
 
-        assertNotNull(result);  // Verifica que el resultado no sea null
+        assertNotNull(result);
         assertEquals(1, result.getTotalElements());
         assertEquals(category, result.getContent().get(0));
     }

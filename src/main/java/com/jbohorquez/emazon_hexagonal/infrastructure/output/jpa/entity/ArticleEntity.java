@@ -13,7 +13,7 @@ import java.util.Set;
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
 @Entity
-@Table(name = "article")
+@Table(name = ARTICLE)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -27,35 +27,35 @@ public class ArticleEntity {
     @Column(length= NAME_MAX_LENGTH, nullable = false)
     private String name;
 
-    @Column(name = "description", nullable = false, length = DESCRIPTION_BRAND_MAX_LENGTH)
-    @NotBlank(message = "Brand description is mandatory")
-    @Size(max = DESCRIPTION_BRAND_MAX_LENGTH, message = "Brand description cannot be more than DESCRIPTION_BRAND_MAX_LENGTH characters")
+    @Column(name = DESCRIPTION, nullable = false, length = DESCRIPTION_BRAND_MAX_LENGTH)
+    @NotBlank(message = BRAND_DESCRIPTION_IS_MANDATORY)
+    @Size(max = DESCRIPTION_BRAND_MAX_LENGTH, message = BRAND_DESCRIPTION_TOO_LONG)
     private String description;
 
     @Column(nullable = false)
-    @NotNull(message = "Stock is mandatory")
-    @Min(value = ZERO, message = "Stock cannot be negative")
+    @NotNull(message = STOCK_MANDATORY)
+    @Min(value = ZERO, message = STOCK_NEGATIVE)
     private Integer stock;
 
     @Column(nullable = false)
-    @NotNull(message = "Price is mandatory")
-    @Min(value = ZERO, message = "Price cannot be negative")
-    @Digits(integer = INTEGERS, fraction = DECIMALS, message = "Price format is invalid")
+    @NotNull(message = PRICE_MANDATORY)
+    @Min(value = ZERO, message = PRICE_NEGATIVE)
+    @Digits(integer = INTEGERS, fraction = DECIMALS, message = PRICE_INVALID)
     private Double price;
 
-    @NotEmpty(message = "At least one category is required")
-    @Size(min = MIN, max = ASSOCIATED, message = "At least one category is required")
+    @NotEmpty(message = CATEGORY_REQUIRED)
+    @Size(min = MIN, max = ASSOCIATED, message = CATEGORY_REQUIRED)
 
     @ManyToMany
     @JoinTable(
-            name = "article_category",
-            joinColumns = @JoinColumn(name = "article_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
+            name = ARTICLE_CATEGORY,
+            joinColumns = @JoinColumn(name = ARTICLE_ID_PATH),
+            inverseJoinColumns = @JoinColumn(name = CATEGORY_ID_PATH)
     )
     private Set<CategoryEntity> categories;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id")
+    @JoinColumn(name = BRAND_ID_PATH)
     private BrandEntity brand;
 
 }
