@@ -14,8 +14,8 @@ public class ValidationConstants {
 
     public static final String PAGE = "0";
     public static final String SIZE = "10";
-    public static final String ASC = "asc";
-    public static final String DESC = "desc";
+    public static final String ASC = "ASC";
+    public static final String DESC = "DESC";
     public static final String ID = "id";
     public static final String NAME = "name";
     public static final String DESCRIPTION = "description";
@@ -24,9 +24,8 @@ public class ValidationConstants {
     public static final String BRAND = "brand";
     public static final String CATEGORY = "category";
     public static final String CATEGORIES = "categories";
-    public static final String BR_ID = "brId";
 
-    //"Articles"
+    public static final String GET_ARTICLE = "/articles";
     public static final String ARTICLE = "article";
     public static final String ARTICLE_ID = "articleId";
     public static final String ARTICLE_NAME = "articleName";
@@ -105,8 +104,7 @@ public class ValidationConstants {
 
     public static final String ROOT = "/";
     public static final String GET_ID = "/{id}";
-    public static final String GET_ARTICLE = "/articles";
-    public static final String GET_BR_ID = "/{brId}";
+    public static final String GET_ARTICLE_ID = "/{articleId}";
     public static final String GET_BRAND = "/brands";
     public static final String GET_BRAND_ID = "/{brandId}";
     public static final String DELETE_ARTICLE_ID = "/{articleId}";
@@ -116,6 +114,10 @@ public class ValidationConstants {
     public static final String V3_API = "/v3/api-docs/**";
     public static final String AUTH = "/auth/**";
     public static final String ALL_API = "/api/**";
+    public static final String ALL = "*";
+    public static final String[] ALLOWED_METHODS = {"GET", "POST", "PUT", "DELETE", "OPTIONS"};
+    public static final String HTTP = "http://localhost:4200";
+
 
     public static final String JSON = "application/json";
     public static final String ERROR_JWT = "{ \"error\": \"Access denied: Invalid or malformed JWT token\" }";

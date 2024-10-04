@@ -1,6 +1,7 @@
 package com.jbohorquez.emazon_hexagonal.domain.spi;
 
 import com.jbohorquez.emazon_hexagonal.domain.model.Category;
+import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity.CategoryEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,6 @@ public interface ICategoryPersistencePort {
     Page<Category> getCategories(PageRequest pageRequest);
 
     Page<Category> findAll(Pageable pageable);
+
+    Page<CategoryEntity> getCategories(int page, int size, String sortBy, String sortDirection);
 }

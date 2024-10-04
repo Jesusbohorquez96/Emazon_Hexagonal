@@ -80,9 +80,9 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "200", description = "Brand successfully returned"),
             @ApiResponse(responseCode = "404", description = "Brand not found")
     })
-    @GetMapping(GET_BR_ID)
+    @GetMapping(GET_BRAND_ID)
     @PreAuthorize(TODO_ROL)
-    public ResponseEntity<BrandResponse> getFromBrand(@PathVariable(name = BR_ID) Long brandId) {
+    public ResponseEntity<BrandResponse> getFromBrand(@PathVariable(name = BRAND_ID) Long brandId) {
         return ResponseEntity.ok(brandsHandler.getFromBrand(brandId));
     }
 

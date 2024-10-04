@@ -6,13 +6,16 @@ import com.jbohorquez.emazon_hexagonal.application.mapper.CategoryRequestMapper;
 import com.jbohorquez.emazon_hexagonal.application.mapper.CategoryResponseMapper;
 import com.jbohorquez.emazon_hexagonal.domain.api.ICategoryServicePort;
 import com.jbohorquez.emazon_hexagonal.domain.model.Category;
+import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity.CategoryEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.ASC;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +27,10 @@ public class CategoriesHandler implements ICategoriesHandler {
     private final ICategoryServicePort categoryServicePort;
 
     @Override
-    public Page<CategoryResponse> getCategories(int page, int size, String sortDirection) {
-
-        return categoryServicePort.getCategories(page, size, Boolean.parseBoolean(sortDirection))
-                .map(categoryResponseMapper::toResponseList);
+    public Page<CategoryResponse> getCategories(int page, int size, String sortBy, String sortDirection) {
+        boolean ascending = ASC.equalsIgnoreCase(sortDirection);
+        return categoryServicePort.getCategories(page, size, sortBy, ascending)
+                .map((java.util.function.Function<? super CategoryEntity, ? extends CategoryResponse>) categoryResponseMapper::toResponseList);
     }
 
     @Override

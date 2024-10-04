@@ -3,6 +3,7 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.ICategoriesHandler;
+import com.jbohorquez.emazon_hexagonal.enums.SortByFieldsArticles;
 import com.jbohorquez.emazon_hexagonal.infrastructure.exception.AllExistsException;
 import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,24 +37,24 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
-    @PreAuthorize(TODO_ROL)
+//    @PreAuthorize(TODO_ROL)
     public ResponseEntity<Page<CategoryResponse>> getCategories(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size,
+            @RequestParam(defaultValue = NAME) SortByFieldsArticles sortBy,
             @RequestParam(defaultValue = ASC) String sortDirection
     ) {
-        Page<CategoryResponse> categories = categoriesHandler.getCategories(page, size, sortDirection);
+        Page<CategoryResponse> categories = categoriesHandler.getCategories(page, size, sortBy.getValue(), sortDirection);
         return ResponseEntity.ok(categories);
-
     }
+
     @Operation(summary = "Save a new category", description = "Saves a new category to the database.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Category created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
-
-    @PostMapping(ROOT)
-    @PreAuthorize(ROL_ADMIN)
+    @PostMapping
+//    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Map<String, String>> saveInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         try {
             categoriesHandler.saveInCategory(categoryRequest);
@@ -74,7 +74,7 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "200", description = "Category list returned successfully")
     })
     @GetMapping(ROOT)
-    @PreAuthorize(TODO_ROL)
+//    @PreAuthorize(TODO_ROL)
     public ResponseEntity<List<CategoryResponse>> getFromCategory() {
         return ResponseEntity.ok(categoriesHandler.getFromCategory());
     }
@@ -85,7 +85,7 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @GetMapping(GET_ID)
-    @PreAuthorize(TODO_ROL)
+//    @PreAuthorize(TODO_ROL)
     public ResponseEntity<CategoryResponse> getFromCategory(@PathVariable(name = ID) Long categoryId) {
         return ResponseEntity.ok(categoriesHandler.getFromCategory(categoryId));
     }
@@ -97,7 +97,7 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @PutMapping(ROOT)
-    @PreAuthorize(ROL_ADMIN)
+//    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Void> updateInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         categoriesHandler.updateInCategory(categoryRequest);
         return ResponseEntity.noContent().build();
@@ -109,7 +109,7 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @DeleteMapping(GET_CATEGORY_ID)
-    @PreAuthorize(ROL_ADMIN)
+//    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Void> deleteFromCategory(@PathVariable Long categoryId) {
         categoriesHandler.deleteFromCategory(categoryId);
         return ResponseEntity.status(HttpStatus.OK).build();

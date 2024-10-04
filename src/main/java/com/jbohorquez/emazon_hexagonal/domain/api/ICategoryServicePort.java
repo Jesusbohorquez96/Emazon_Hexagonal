@@ -1,8 +1,8 @@
 package com.jbohorquez.emazon_hexagonal.domain.api;
 
 import com.jbohorquez.emazon_hexagonal.domain.model.Category;
+import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity.CategoryEntity;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface ICategoryServicePort {
 
     void deleteCategory(Long categoryId);
 
-    Page<Category> getCategories(int page, int size, boolean ascending);
+    Page<CategoryEntity> getCategories(int page, int size, String sortBy, boolean ascending);
 
     Page<Category> getCategories(int pageNumber, int pageSize, String sortDirection);
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ICategoriesHandler {
 
-    Page<CategoryResponse> getCategories(int page, int size, String sortDirection);
+    Page<CategoryResponse> getCategories(int page, int size, String sortBy, String sortDirection);
 
     void saveInCategory(CategoryRequest categoryRequest);
 

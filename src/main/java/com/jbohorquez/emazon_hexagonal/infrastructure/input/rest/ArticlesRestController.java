@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -38,7 +37,7 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
-    @PreAuthorize(TODO_ROL)
+//    @PreAuthorize(TODO_ROL)
     public ResponseEntity<Page<ArticleResponse>> getArticles(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size,
@@ -54,10 +53,10 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "201", description = "Article created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
-
     @PostMapping
-    @PreAuthorize(ROL_ADMIN)
-    public ResponseEntity<Map<String, String>> saveArticleIn(@Valid @RequestBody ArticleRequest articleRequest) {
+//    @PreAuthorize(TODO_ROL)
+    public ResponseEntity<Map<String, String>> saveArticleIn(
+            @Valid @RequestBody ArticleRequest articleRequest ) {
         try {
             articlesHandler.saveArticleIn(articleRequest);
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -73,7 +72,7 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "200", description = "List of articles returned successfully")
     })
     @GetMapping(ROOT)
-    @PreAuthorize(TODO_ROL)
+//    @PreAuthorize(TODO_ROL)
     public ResponseEntity<List<ArticleResponse>> getArticleFrom() {
         return ResponseEntity.ok(articlesHandler.getArticleFrom());
     }
@@ -83,9 +82,9 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "200", description = "Article returned successfully"),
             @ApiResponse(responseCode = "404", description = "Article not found")
     })
-    @GetMapping(GET_BR_ID)
-    @PreAuthorize(TODO_ROL)
-    public ResponseEntity<ArticleResponse> getArticleFrom(@PathVariable(name = BR_ID) Long articleId) {
+    @GetMapping(GET_ARTICLE_ID)
+//    @PreAuthorize(TODO_ROL)
+    public ResponseEntity<ArticleResponse> getArticleFrom(@PathVariable(name = ARTICLE_ID) Long articleId) {
         return ResponseEntity.ok(articlesHandler.getArticleFrom(articleId));
     }
 
@@ -95,8 +94,8 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data"),
             @ApiResponse(responseCode = "404", description = "Article not found")
     })
-    @PutMapping(INCREASE_STOCK_ARTICLE_ID)
-    @PreAuthorize(ROL_ADMIN_AUX)
+    @PutMapping("/increase-stock/{articleId}")
+//    @PreAuthorize("hasAnyRole('admin', 'aux_bodega')")
     public ResponseEntity<Map<String, String>> increaseStock(
             @PathVariable Long articleId,
             @RequestParam(value = ADDITIONAL_STOCK, required = false, defaultValue = PAGE) int additionalStock) {
@@ -115,7 +114,7 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "404", description = "Article not found")
     })
     @DeleteMapping(DELETE_ARTICLE_ID)
-    @PreAuthorize(ROL_ADMIN)
+//    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Void> deleteArticleFrom(@PathVariable Long articleId) {
         articlesHandler.deleteArticleFrom(articleId);
         return ResponseEntity.ok().build();
