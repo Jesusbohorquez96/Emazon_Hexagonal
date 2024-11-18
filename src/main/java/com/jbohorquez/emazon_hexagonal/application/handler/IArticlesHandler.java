@@ -25,4 +25,6 @@ public interface IArticlesHandler {
     void updateArticleIn(ArticleRequest articleRequest);
 
     void deleteArticleFrom(Long articleId);
+
+    Page<ArticleResponse> getArticlesFilter(int page, int size, String value, String sortDirection, List<Long> articleIds, String categoryName, String brandName);
 }

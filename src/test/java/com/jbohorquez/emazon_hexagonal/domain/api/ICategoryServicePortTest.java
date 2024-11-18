@@ -77,7 +77,7 @@ class ICategoryServicePortTest {
         Page<Category> categoryPage = new PageImpl<>(Arrays.asList(category), pageRequest, 1);
 
         when(categoryPersistencePort.findAll(pageRequest)).thenReturn(categoryPage);
-        Page<Category> result = categoryUseCase.getCategories(0, 10, true);
+        Page<Category> result = categoryUseCase.getCategories(0, 10, String.valueOf(true));
 
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -54,9 +55,9 @@ public class ArticlesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PostMapping
-//    @PreAuthorize(TODO_ROL)
+    @PreAuthorize(ROL_ADMIN_AUX)
     public ResponseEntity<Map<String, String>> saveArticleIn(
-            @Valid @RequestBody ArticleRequest articleRequest ) {
+            @Valid @RequestBody ArticleRequest articleRequest) {
         try {
             articlesHandler.saveArticleIn(articleRequest);
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -118,5 +119,23 @@ public class ArticlesRestController {
     public ResponseEntity<Void> deleteArticleFrom(@PathVariable Long articleId) {
         articlesHandler.deleteArticleFrom(articleId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<ArticleResponse>> getArticlesByCategory(
+            @RequestParam(defaultValue = PAGE) int page,
+            @RequestParam(defaultValue = SIZE) int size,
+            @RequestParam(defaultValue = ARTICLE_NAME) String sortBy,
+            @RequestParam(defaultValue = ASC) String sortDirection,
+            @RequestParam(required = false) List<Long> articleIds,
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) String brandName
+    ) {
+        try {
+        Page<ArticleResponse> articles = articlesHandler.getArticlesFilter(page, size, sortBy, sortDirection, articleIds, categoryName, brandName);
+        return ResponseEntity.ok(articles);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

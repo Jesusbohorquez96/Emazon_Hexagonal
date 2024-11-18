@@ -3,8 +3,8 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.ICategoriesHandler;
-import com.jbohorquez.emazon_hexagonal.enums.SortByFieldsArticles;
 import com.jbohorquez.emazon_hexagonal.infrastructure.exception.AllExistsException;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exception.DescriptionTooLongException;
 import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,12 +14,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static com.jbohorquez.emazon_hexagonal.constants.ValidationConstants.*;
 
@@ -41,11 +41,15 @@ public class CategoriesRestController {
     public ResponseEntity<Page<CategoryResponse>> getCategories(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size,
-            @RequestParam(defaultValue = NAME) SortByFieldsArticles sortBy,
             @RequestParam(defaultValue = ASC) String sortDirection
     ) {
-        Page<CategoryResponse> categories = categoriesHandler.getCategories(page, size, sortBy.getValue(), sortDirection);
-        return ResponseEntity.ok(categories);
+        System.out.println("page: " + page + " size: " + size + " sortDirection: " + sortDirection);
+        try {
+            Page<CategoryResponse> categories = categoriesHandler.getCategories(page, size, "name", sortDirection);
+            return ResponseEntity.ok(categories);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @Operation(summary = "Save a new category", description = "Saves a new category to the database.")
@@ -54,17 +58,19 @@ public class CategoriesRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PostMapping
-//    @PreAuthorize(ROL_ADMIN)
-    public ResponseEntity<Map<String, String>> saveInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
+    @PreAuthorize(ROL_ADMIN_AUX)
+    public ResponseEntity<?> saveInCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         try {
             categoriesHandler.saveInCategory(categoryRequest);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(Collections.singletonMap(MESSAGE, ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
         } catch (AllExistsException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INTERNAL_ERROR.getMessage()));
-        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INTERNAL_ERROR.getMessage()));
+        }catch (DescriptionTooLongException e) {
+            return ResponseEntity.badRequest().body(DESCRIPTION_TOO_LONG);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(Collections.singletonMap(MESSAGE, ExceptionResponse.ALREADY_EXISTS.getMessage()));
         }
     }

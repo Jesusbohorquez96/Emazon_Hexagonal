@@ -3,6 +3,7 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.BrandRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.BrandResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.BrandsHandler;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exception.AllExistsException;
 import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -36,7 +37,7 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "400", description = "Invalid request")
     })
     @GetMapping
-    @PreAuthorize(TODO_ROL)
+//    @PreAuthorize(TODO_ROL)
     public ResponseEntity<Page<BrandResponse>> getBrands(
             @RequestParam(defaultValue = PAGE) int page,
             @RequestParam(defaultValue = SIZE) int size,
@@ -52,16 +53,19 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
 
-    @PostMapping(ROOT)
-    @PreAuthorize(ROL_ADMIN)
+    @PostMapping
+    @PreAuthorize(ROL_ADMIN_AUX)
     public ResponseEntity<Map<String, String>> saveInBrand(@Valid @RequestBody BrandRequest brandRequest) {
         try {
             brandsHandler.saveInBrand(brandRequest);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(Collections.singletonMap(MESSAGE, ExceptionResponse.SUCCESSFUL_CREATION.getMessage()));
-        } catch (Exception e) {
+        } catch (AllExistsException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NOT_AUTHENTICATION.getMessage()));
+                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.INTERNAL_ERROR.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Collections.singletonMap(MESSAGE, ExceptionResponse.ALREADY_EXISTS.getMessage()));
         }
     }
 
@@ -70,7 +74,7 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "200", description = "List of brands returned successfully")
     })
     @GetMapping(ROOT)
-    @PreAuthorize(TODO_ROL)
+//    @PreAuthorize(TODO_ROL)
     public ResponseEntity<List<BrandResponse>> getFromBrand() {
         return ResponseEntity.ok(brandsHandler.getFromBrand());
     }
@@ -81,7 +85,7 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "404", description = "Brand not found")
     })
     @GetMapping(GET_BRAND_ID)
-    @PreAuthorize(TODO_ROL)
+//    @PreAuthorize(TODO_ROL)
     public ResponseEntity<BrandResponse> getFromBrand(@PathVariable(name = BRAND_ID) Long brandId) {
         return ResponseEntity.ok(brandsHandler.getFromBrand(brandId));
     }
@@ -93,7 +97,7 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "404", description = "Brand not found")
     })
     @PutMapping(ROOT)
-    @PreAuthorize(ROL_ADMIN)
+//    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Void> updateInBrand(@Valid @RequestBody BrandRequest brandRequest) {
         brandsHandler.updateInBrand(brandRequest);
         return ResponseEntity.noContent().build();
@@ -105,7 +109,7 @@ public class BrandsRestController {
             @ApiResponse(responseCode = "404", description = "Brand not found")
     })
     @DeleteMapping(GET_BRAND_ID)
-    @PreAuthorize(ROL_ADMIN)
+//    @PreAuthorize(ROL_ADMIN)
     public ResponseEntity<Void> deleteFromBrand(@PathVariable Long brandId) {
         brandsHandler.deleteFromBrand(brandId);
         return ResponseEntity.status(HttpStatus.OK).build();

@@ -89,4 +89,12 @@ public class ArticlesHandler implements IArticlesHandler {
         articleServicePort.updateArticle(article);
     }
 
+    @Override
+    public Page<ArticleResponse> getArticlesFilter(
+            int page, int size, String sortBy, String sortDirection, List<Long> articleIds, String categoryName, String brandName
+    ) {
+        boolean ascending = "ASC".equalsIgnoreCase(sortDirection);
+        return articleServicePort.getArticlesFilter(page, size, sortBy, ascending, articleIds, categoryName, brandName)
+                .map(articleResponseMapper::toResponseList);
+    }
 }

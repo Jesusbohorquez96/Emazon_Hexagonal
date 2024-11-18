@@ -3,7 +3,6 @@ package com.jbohorquez.emazon_hexagonal.infrastructure.input.rest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryRequest;
 import com.jbohorquez.emazon_hexagonal.application.dto.CategoryResponse;
 import com.jbohorquez.emazon_hexagonal.application.handler.ICategoriesHandler;
-import com.jbohorquez.emazon_hexagonal.infrastructure.exceptionhandler.ExceptionResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -45,7 +44,7 @@ class CategoriesRestControllerTest {
         );
         Page<CategoryResponse> categoryPage = new PageImpl<>(categoryList, PageRequest.of(0, 10, Sort.by("name").ascending()), categoryList.size());
 
-        when(categoriesHandler.getCategories(0, 10, "asc")).thenReturn(categoryPage);
+//        when(categoriesHandler.getCategories(0, 10, "asc")).thenReturn(categoryPage);
 
         ResponseEntity<Page<CategoryResponse>> response = categoriesRestController.getCategories(0, 10, "asc");
 
@@ -59,7 +58,7 @@ class CategoriesRestControllerTest {
 
         doNothing().when(categoriesHandler).saveInCategory(categoryRequest);
 
-        ResponseEntity<Map<String, String>> response = categoriesRestController.saveInCategory(categoryRequest);
+        ResponseEntity<Map<String, String>> response = (ResponseEntity<Map<String, String>>) categoriesRestController.saveInCategory(categoryRequest);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());

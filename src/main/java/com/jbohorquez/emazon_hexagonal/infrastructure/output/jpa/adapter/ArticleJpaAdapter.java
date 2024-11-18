@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -93,5 +94,30 @@ public class ArticleJpaAdapter implements IArticlePersistencePort {
     @Override
     public Page<Article> findAll(Pageable pageable) {
         return articleRepository.findAll(pageable).map(articleEntityMapper::toArticle);
+    }
+
+    @Override
+    public Page<Article> getArticlesFilter(
+            int page, int size, String sortBy, boolean ascending, List<Long> articleIds, String categoryName, String brandName
+    ) {
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<ArticleEntity> articleEntityPage;
+        if (categoryName != null && brandName != null) {
+            articleEntityPage = articleRepository.findByBrandNameAndCategoryNameAndIds(brandName, categoryName, articleIds, pageable);
+        } else if (categoryName != null) {
+            articleEntityPage = articleRepository.findByCategoryAndIds(categoryName, articleIds, pageable);
+        } else if (brandName != null) {
+            articleEntityPage = articleRepository.findByBrandNameAndIds(brandName, articleIds, pageable);
+        } else {
+            articleEntityPage = articleRepository.findByIds(articleIds, pageable);
+        }
+
+        if (articleEntityPage.isEmpty()) {
+            throw new NoDataFoundException();
+        }
+
+        return articleEntityPage.map(articleEntityMapper::toArticle);
     }
 }

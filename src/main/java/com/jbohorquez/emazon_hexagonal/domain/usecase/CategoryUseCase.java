@@ -3,6 +3,8 @@ package com.jbohorquez.emazon_hexagonal.domain.usecase;
 import com.jbohorquez.emazon_hexagonal.domain.api.ICategoryServicePort;
 import com.jbohorquez.emazon_hexagonal.domain.model.Category;
 import com.jbohorquez.emazon_hexagonal.domain.spi.ICategoryPersistencePort;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exception.DescriptionTooLongException;
+import com.jbohorquez.emazon_hexagonal.infrastructure.exception.NameTooLongException;
 import com.jbohorquez.emazon_hexagonal.infrastructure.output.jpa.entity.CategoryEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +31,12 @@ public  class CategoryUseCase implements ICategoryServicePort {
 
     @Override
     public void saveCategory(Category category) {
+        if (category.getName().length() > NAME_MAX_LENGTH) {
+            throw new NameTooLongException(NAME_TOO_LONG);
+        }
+        if (category.getDescription() == null || category.getDescription().length() > DESCRIPTION_MAX_LENGTH) {
+            throw new DescriptionTooLongException(DESCRIPTION_TOO_LONG);
+        }
       categoryPersistencePort.saveCategory(category);
     }
 

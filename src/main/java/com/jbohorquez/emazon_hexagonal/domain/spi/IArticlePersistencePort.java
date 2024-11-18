@@ -24,4 +24,6 @@ public interface IArticlePersistencePort {
     Page<Article> getCategories(PageRequest pageRequest);
 
     Page<Article> findAll(Pageable pageable);
+
+    Page<Article> getArticlesFilter(int page, int size, String value, boolean ascending, List<Long> articleIds, String categoryName, String brandName);
 }

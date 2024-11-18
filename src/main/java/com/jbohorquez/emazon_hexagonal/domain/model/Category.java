@@ -1,6 +1,5 @@
 package com.jbohorquez.emazon_hexagonal.domain.model;
 
-
 public class Category {
 
     private Long id;

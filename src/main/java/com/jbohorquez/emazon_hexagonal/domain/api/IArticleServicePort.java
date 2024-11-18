@@ -21,5 +21,6 @@ public interface IArticleServicePort {
 
     Page<Article> getArticles(int page, int size, boolean ascending);
 
+    Page<Article> getArticlesFilter(int page, int size, String value, boolean ascending, List<Long> articleIds, String categoryName, String brandName);
 }
 
